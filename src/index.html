@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Megaload</title>
+  </head>
+  <body>
+    <h1>Megaload</h1>
+    <form name="load">
+      <fieldset>
+        <legend>
+          <input
+            id="count-prime"
+            name="generator"
+            type="radio"
+            value="count-prime"
+            checked
+          />
+          <label for="count-prime">Count Prime</label>
+        </legend>
+        <label for="from">From</label>
+        <input id="from" type="number" min="0" value="1" size="8" />
+        <label for="to">To</label>
+        <input id="to" type="number" min="0" value="1000000" size="8" />
+      </fieldset>
+      <fieldset>
+        <legend>
+          <input
+            id="parse-file"
+            name="generator"
+            type="radio"
+            value="parse-file"
+          />
+          <label for="parse-file">Parse File</label>
+        </legend>
+        <input id="file" type="file" />
+      </fieldset>
+    </form>
+    <p>
+      <button id="run">Run</button>
+      <button id="cancel">Cancel</button>
+    </p>
+    <textarea
+      id="output"
+      readonly
+      rows="20"
+      style="box-sizing: border-box; resize: vertical; width: 100%"
+    ></textarea>
+    <p>
+      <button id="clear">Clear</button>
+    </p>
+    <script src="main.bundle.js"></script>
+  </body>
+</html>
