@@ -1,4 +1,4 @@
-import { timeout } from "./timeout";
+import { timeout } from ".";
 
 describe("timeout", () => {
   it("waits for specified milli seconds", async () => {

@@ -1,11 +1,11 @@
-import { DefaultLoadGeneratorFactory } from "../../features/load/DefaultGeneratorFactory";
-import { LoadGenerator } from "../../features/load/LoadGenerator";
-import { CountPrime } from "../../features/load/generators/CountPrime";
-import { ParseFile } from "../../features/load/generators/ParseFile";
-import { ReadFromAsyncIterable } from "../../utils/stream/readable/ReadFromAsyncIterable";
-import { WriteToCallback } from "../../utils/stream/writable/WriteToCallback";
-import { WriteToTextArea } from "../../utils/stream/writable/WriteToTextArea";
-import { timeout } from "../../utils/timeout";
+import { DefaultLoadGeneratorFactory, LoadGenerator } from "@/features/load";
+import { CountPrime, ParseFile } from "@/features/load/generators";
+import { timeout } from "@/utils";
+import {
+  ReadFromAsyncIterable,
+  WriteToCallback,
+  WriteToTextArea,
+} from "@/utils/stream";
 
 type MainControllerOptions = {
   elements: {

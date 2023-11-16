@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker", "Webworker.Iterable"],
     "module": "ESNext",
     "moduleResolution": "node",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "strict": true,
     "target": "ESNext"
   },

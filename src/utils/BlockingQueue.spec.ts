@@ -1,4 +1,4 @@
-import { BlockingQueue } from "./BlockingQueue";
+import { BlockingQueue } from ".";
 
 const timeout = (ms: number, callback: () => void = () => {}) =>
   new Promise<void>((resolve) =>

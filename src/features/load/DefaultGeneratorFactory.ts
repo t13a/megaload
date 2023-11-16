@@ -1,8 +1,8 @@
-import { LoadGenerator } from "./LoadGenerator";
 import {
+  LoadGenerator,
   LoadGeneratorFactory,
   LoadGeneratorFactoryToken,
-} from "./LoadGeneratorFactory";
+} from ".";
 
 export type DefaultLoadGeneratorFactoryOptions<
   K extends LoadGeneratorFactoryToken,

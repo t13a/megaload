@@ -1,5 +1,5 @@
-import { timeout } from "../../../utils/timeout";
-import { LoadGenerator } from "../LoadGenerator";
+import { timeout } from "@/utils";
+import { LoadGenerator } from "..";
 
 export type CountPrimeOptions = {
   from: number;

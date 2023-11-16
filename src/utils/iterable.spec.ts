@@ -1,4 +1,4 @@
-import { toAsyncIterable } from "./iterable";
+import { toAsyncIterable } from ".";
 
 describe("toAsyncIterable", () => {
   it("transforms an iterable into an async iterable", async () => {

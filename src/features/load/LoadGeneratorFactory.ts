@@ -1,4 +1,4 @@
-import { LoadGenerator } from "./LoadGenerator";
+import { LoadGenerator } from ".";
 
 export type LoadGeneratorFactoryToken = string | number;
 

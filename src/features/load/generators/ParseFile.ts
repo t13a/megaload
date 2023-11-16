@@ -1,6 +1,6 @@
+import { BlockingQueue } from "@/utils";
 import papaparse from "papaparse";
-import { BlockingQueue } from "../../../utils/BlockingQueue";
-import { LoadGenerator } from "../LoadGenerator";
+import { LoadGenerator } from "..";
 
 export type ParseFileOptions = {
   file: File;

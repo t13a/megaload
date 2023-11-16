@@ -1,5 +1,5 @@
+import { MainController } from "@/components/main/MainController";
 import assert from "assert";
-import { MainController } from "./components/main/MainController";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const countPrimeInput = document.querySelector("#count-prime");
