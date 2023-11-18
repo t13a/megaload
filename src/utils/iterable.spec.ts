@@ -1,4 +1,18 @@
-import { toAsyncIterable } from ".";
+import { toArray, toAsyncIterable } from ".";
+
+describe("toArray", () => {
+  it("transforms an async iterable into an array", async () => {
+    const asyncIterable = async function* () {
+      yield 1;
+      yield 2;
+      yield 3;
+      yield 4;
+      yield 5;
+    };
+    const array = await toArray(asyncIterable());
+    expect(array).toStrictEqual([1, 2, 3, 4, 5]);
+  });
+});
 
 describe("toAsyncIterable", () => {
   it("transforms an iterable into an async iterable", async () => {
