@@ -1,14 +1,23 @@
-import { CountProps, count, format, isPrime } from ".";
+import { CountProps, DelayProps, count, format, isPrime } from ".";
 import { Dipatcher } from "../Dispatcher";
 
 export const CountPrime =
-  ({ from, to }: CountProps): Dipatcher =>
-  async (context) => {
+  ({ from, to }: CountProps, { time }: DelayProps): Dipatcher =>
+  async ({ signal, ...context }) => {
     let result = 0;
 
     const beginAt = new Date().getTime();
 
+    let t1 = new Date().getTime();
     for (const n of count({ from, to })) {
+      const t2 = new Date().getTime();
+      if (t2 - t1 >= time) {
+        await new Promise((resolve) => setTimeout(resolve));
+        t1 = t2;
+      }
+      if (signal.aborted) {
+        return;
+      }
       if (isPrime(n)) {
         result++;
       }

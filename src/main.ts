@@ -18,10 +18,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const repo = new DefaultDispatcherFactoryRepository();
   repo.register(CountPrime.name, () =>
-    CountPrime({
-      from: fromInput.valueAsNumber,
-      to: toInput.valueAsNumber,
-    }),
+    CountPrime(
+      {
+        from: fromInput.valueAsNumber,
+        to: toInput.valueAsNumber,
+      },
+      {
+        time: timeInput.valueAsNumber,
+      },
+    ),
   );
   repo.register(CountPrimeWithStreamsAPI.name, () =>
     CountPrimeWithStreamsAPI(
