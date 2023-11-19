@@ -9,6 +9,20 @@
       body {
         margin: 1em;
       }
+      div.content {
+        margin: 0 auto;
+        max-width: 82em;
+      }
+      div.dispatches {
+        align-items: flex-start;
+        display: flex;
+        flex-flow: row wrap;
+        gap: 1em;
+        justify-content: space-between;
+      }
+      div.dispatches > * {
+        width: 40em;
+      }
       label {
         text-transform: uppercase;
       }
@@ -38,24 +52,20 @@
         border-radius: 0.5em;
         padding: 0.5em;
         text-align: right;
-        width: 8em;
-      }
-      hr {
-        border: 0.125em solid #ddd;
-        margin: 2em auto;
-        max-width: 48em;
+        width: 6em;
       }
       form {
         display: flex;
         flex-flow: column nowrap;
-        margin: 1em auto;
+        margin: 1em 0;
         padding: 0;
-        max-width: 48em;
       }
       form.props {
+        border-bottom: 0.125em solid #ddd;
         flex-flow: row wrap;
         gap: 1em;
-        justify-content: right;
+        margin-top: 4em;
+        padding-bottom: 1em;
       }
       form.props > h2 {
         margin: 0 auto 0 0;
@@ -72,7 +82,7 @@
         background-color: #eee;
         border: 0.125em solid #ddd;
         border-radius: 1em;
-        margin: 1em auto;
+        margin: 0;
       }
       form.dispatch > div {
         align-items: center;
@@ -105,80 +115,83 @@
   </head>
   <body>
     <h1>Megaload</h1>
-    <form name="count-number-props" class="props">
-      <h2>Count Number</h2>
-      <div>
-        <label for="from">From</label>
-        <input name="from" type="number" min="1" value="1" />
+    <div class="content">
+      <form name="count-number-props" class="props">
+        <h2>Count Number</h2>
+        <div>
+          <label for="from">From</label>
+          <input name="from" type="number" min="1" value="1" />
+        </div>
+        <div>
+          <label for="to">To</label>
+          <input name="to" type="number" min="1" value="1000000" />
+        </div>
+      </form>
+      <div class="dispatches">
+        <form name="CountNumberHardCoded" class="dispatch">
+          <div>
+            <h3>Hard Coded</h3>
+            <button name="run" disabled>Run</button>
+            <button name="abort" class="hidden" disabled>Abort</button>
+            <button name="clear" disabled>Clear</button>
+          </div>
+          <textarea name="output" class="hidden" readonly></textarea>
+        </form>
+        <form name="CountNumberUsingBlockingQueue" class="dispatch">
+          <div>
+            <h3>Own Blocking Queue</h3>
+            <button name="run" disabled>Run</button>
+            <button name="abort" class="hidden" disabled>Abort</button>
+            <button name="clear" disabled>Clear</button>
+          </div>
+          <textarea name="output" class="hidden" readonly></textarea>
+        </form>
       </div>
-      <div>
-        <label for="to">To</label>
-        <input name="to" type="number" min="1" value="1000000" />
+      <form name="count-prime-props" class="props">
+        <h2>Count Prime</h2>
+        <div>
+          <label for="from">From</label>
+          <input name="from" type="number" min="1" value="1" />
+        </div>
+        <div>
+          <label for="to">To</label>
+          <input name="to" type="number" min="1" value="1000000" />
+        </div>
+        <div>
+          <label for="time">Delay Threshold (ms)</label>
+          <input name="time" type="number" min="0" value="100" />
+        </div>
+      </form>
+      <div class="dispatches">
+        <form name="CountPrimeHardCoded" class="dispatch">
+          <div>
+            <h3>Hard Coded</h3>
+            <button name="run" disabled>Run</button>
+            <button name="abort" disabled>Abort</button>
+            <button name="clear" disabled>Clear</button>
+          </div>
+          <textarea name="output" class="hidden" readonly></textarea>
+        </form>
+        <form name="CountPrimeUsingOwnStreamProcessor" class="dispatch">
+          <div>
+            <h3>Own Stream Processor</h3>
+            <button name="run" disabled>Run</button>
+            <button name="abort" disabled>Abort</button>
+            <button name="clear" disabled>Clear</button>
+          </div>
+          <textarea name="output" class="hidden" readonly></textarea>
+        </form>
+        <form name="CountPrimeUsingStreamsAPI" class="dispatch">
+          <div>
+            <h3>Streams API</h3>
+            <button name="run" disabled>Run</button>
+            <button name="abort" disabled>Abort</button>
+            <button name="clear" disabled>Clear</button>
+          </div>
+          <textarea name="output" class="hidden" readonly></textarea>
+        </form>
       </div>
-    </form>
-    <form name="CountNumberHardCoded" class="dispatch">
-      <div>
-        <h3>Hard Coded</h3>
-        <button name="run" disabled>Run</button>
-        <button name="abort" class="hidden" disabled>Abort</button>
-        <button name="clear" disabled>Clear</button>
-      </div>
-      <textarea name="output" class="hidden" readonly></textarea>
-    </form>
-    <form name="CountNumberUsingBlockingQueue" class="dispatch">
-      <div>
-        <h3>Using Own Blocking Queue</h3>
-        <button name="run" disabled>Run</button>
-        <button name="abort" class="hidden" disabled>Abort</button>
-        <button name="clear" disabled>Clear</button>
-      </div>
-      <textarea name="output" class="hidden" readonly></textarea>
-    </form>
-    <hr />
-    <form name="delay-props" class="props">
-      <div>
-        <label for="time">Delay Threshold (ms)</label>
-        <input name="time" type="number" min="0" value="100" />
-      </div>
-    </form>
-    <form name="count-props" class="props">
-      <h2>Count Prime</h2>
-      <div>
-        <label for="from">From</label>
-        <input name="from" type="number" min="1" value="1" />
-      </div>
-      <div>
-        <label for="to">To</label>
-        <input name="to" type="number" min="1" value="1000000" />
-      </div>
-    </form>
-    <form name="CountPrimeHardCoded" class="dispatch">
-      <div>
-        <h3>Hard Coded</h3>
-        <button name="run" disabled>Run</button>
-        <button name="abort" disabled>Abort</button>
-        <button name="clear" disabled>Clear</button>
-      </div>
-      <textarea name="output" class="hidden" readonly></textarea>
-    </form>
-    <form name="CountPrimeUsingOwnStreamProcessor" class="dispatch">
-      <div>
-        <h3>Using Own Stream Processor</h3>
-        <button name="run" disabled>Run</button>
-        <button name="abort" disabled>Abort</button>
-        <button name="clear" disabled>Clear</button>
-      </div>
-      <textarea name="output" class="hidden" readonly></textarea>
-    </form>
-    <form name="CountPrimeUsingStreamsAPI" class="dispatch">
-      <div>
-        <h3>Using Streams API</h3>
-        <button name="run" disabled>Run</button>
-        <button name="abort" disabled>Abort</button>
-        <button name="clear" disabled>Clear</button>
-      </div>
-      <textarea name="output" class="hidden" readonly></textarea>
-    </form>
+    </div>
     <script src="main.bundle.js"></script>
   </body>
 </html>

@@ -11,12 +11,19 @@ import { CountNumberHardCoded } from "./components/main/dispatches/CountNumberHa
 import { CountNumberUsingBlockingQueue } from "./components/main/dispatches/CountNumberUsingOwnBlockingQueue";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const delayPropsForm = getForm("delay-props");
-  const timeInput = getFormItem<HTMLInputElement>(delayPropsForm, "time");
-
-  const countPropsForm = getForm("count-props");
-  const fromInput = getFormItem<HTMLInputElement>(countPropsForm, "from");
-  const toInput = getFormItem<HTMLInputElement>(countPropsForm, "to");
+  const countPrimePropsForm = getForm("count-prime-props");
+  const countPrimeFromInput = getFormItem<HTMLInputElement>(
+    countPrimePropsForm,
+    "from",
+  );
+  const countPrimeToInput = getFormItem<HTMLInputElement>(
+    countPrimePropsForm,
+    "to",
+  );
+  const countPrimeTimeInput = getFormItem<HTMLInputElement>(
+    countPrimePropsForm,
+    "time",
+  );
 
   const countNumberPropsForm = getForm("count-number-props");
   const countNumberFromInput = getFormItem<HTMLInputElement>(
@@ -32,33 +39,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   repo.register(CountPrimeHardCoded.name, () =>
     CountPrimeHardCoded(
       {
-        from: fromInput.valueAsNumber,
-        to: toInput.valueAsNumber,
+        from: countPrimeFromInput.valueAsNumber,
+        to: countPrimeToInput.valueAsNumber,
       },
       {
-        time: timeInput.valueAsNumber,
+        time: countPrimeTimeInput.valueAsNumber,
       },
     ),
   );
   repo.register(CountPrimeUsingStreamsAPI.name, () =>
     CountPrimeUsingStreamsAPI(
       {
-        from: fromInput.valueAsNumber,
-        to: toInput.valueAsNumber,
+        from: countPrimeFromInput.valueAsNumber,
+        to: countPrimeToInput.valueAsNumber,
       },
       {
-        time: timeInput.valueAsNumber,
+        time: countPrimeTimeInput.valueAsNumber,
       },
     ),
   );
   repo.register(CountPrimeUsingOwnStreamProcessor.name, () =>
     CountPrimeUsingOwnStreamProcessor(
       {
-        from: fromInput.valueAsNumber,
-        to: toInput.valueAsNumber,
+        from: countPrimeFromInput.valueAsNumber,
+        to: countPrimeToInput.valueAsNumber,
       },
       {
-        time: timeInput.valueAsNumber,
+        time: countPrimeTimeInput.valueAsNumber,
       },
     ),
   );
