@@ -1,4 +1,4 @@
-import { DefaultLogger } from "@/utils";
+import { DefaultLogger } from "@/utils/logger";
 import { TestDipatcher } from "./TestDispatcher";
 
 export class TestFormController {

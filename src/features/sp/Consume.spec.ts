@@ -1,4 +1,5 @@
-import { EmptyLogger, consume } from "@/utils";
+import { consume } from "@/utils";
+import { EmptyLogger } from "@/utils/logger";
 import { Consume } from ".";
 
 describe("Consume", () => {

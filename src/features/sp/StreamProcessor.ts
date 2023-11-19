@@ -1,4 +1,4 @@
-import { Logger } from "@/utils";
+import { Logger } from "@/utils/logger";
 
 export type StreamProcessor<I, O> = (
   context: StreamProcessorContext<I>,

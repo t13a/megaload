@@ -1,4 +1,5 @@
-import { Logger, consume } from "@/utils";
+import { consume } from "@/utils";
+import { Logger } from "@/utils/logger";
 import { DefaultBlockingQueue } from "@/utils/queue";
 import { EmptyInput, StreamProcessor } from ".";
 

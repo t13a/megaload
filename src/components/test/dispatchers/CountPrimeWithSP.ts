@@ -1,5 +1,6 @@
 import { Consume, EmptyInput, Filter, Iterate } from "@/features/sp";
-import { EmptyLogger, consume } from "@/utils";
+import { consume } from "@/utils";
+import { EmptyLogger } from "@/utils/logger";
 import { DefaultBlockingQueue } from "@/utils/queue";
 import { count, format, isPrime } from ".";
 import { TestDipatcher } from "../TestDispatcher";

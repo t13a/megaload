@@ -1,4 +1,5 @@
-import { EmptyLogger, toArray, toAsyncIterable } from "@/utils";
+import { toArray, toAsyncIterable } from "@/utils";
+import { EmptyLogger } from "@/utils/logger";
 import { EmptyInput, Iterate } from ".";
 
 describe("Iterate", () => {
