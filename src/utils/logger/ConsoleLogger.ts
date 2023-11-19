@@ -1,8 +1,8 @@
 import { DefaultLogger } from "./DefaultLogger";
 
 export class ConsoleLogger extends DefaultLogger {
-  constructor(id: string) {
-    super(id, {
+  constructor() {
+    super({
       debug: console.debug,
       info: console.info,
       warn: console.warn,

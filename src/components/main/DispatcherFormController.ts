@@ -29,7 +29,7 @@ export class DispatcherFormController {
     this.outputTextArea = options.elements.outputTextArea;
     this.dispatcherFactory = options.dispatcherFactory;
 
-    this.logger = DefaultLogger.of(DispatcherFormController.name, (...data) => {
+    this.logger = DefaultLogger.of((...data) => {
       setTimeout(() => {
         this.writeOutput(...data);
         this.updateElements();

@@ -1,7 +1,5 @@
 export interface Logger {
-  readonly id: string;
-
-  readonly create: (subId?: string) => Logger;
+  readonly create: (name?: string) => Logger;
 
   readonly debug: LoggerWriter;
   readonly info: LoggerWriter;

@@ -1,9 +1,7 @@
 import { Logger } from "./Logger";
 
 export class EmptyLogger implements Logger {
-  readonly id = "empty";
-
-  create(subId?: string | undefined): Logger {
+  create(name?: string | undefined): Logger {
     return this;
   }
 

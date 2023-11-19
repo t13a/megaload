@@ -10,29 +10,38 @@ export type DefaultLoggerWriters = {
 };
 
 export class DefaultLogger implements Logger {
-  readonly id: string;
+  private name: string | undefined;
   readonly writers: DefaultLoggerWriters;
   private createCount: number = 0;
   private beginAt: number | undefined;
 
-  constructor(id: string, writers: DefaultLoggerWriters) {
-    this.id = id;
+  constructor(writers: DefaultLoggerWriters) {
     this.writers = writers;
   }
 
-  create(subId?: string | undefined): Logger {
-    if (this.createCount == Number.MAX_SAFE_INTEGER) {
-      this.createCount = 0;
+  create(name?: string): Logger {
+    const newLogger = new DefaultLogger(this.writers);
+
+    const prefix = this.name ? `${this.name}:` : "";
+    if (name) {
+      newLogger.name = `${prefix}${name}`;
+    } else {
+      if (this.createCount == Number.MAX_SAFE_INTEGER) {
+        this.createCount = 0;
+      }
+      this.createCount++;
+      newLogger.name = `${prefix}${this.createCount}`;
     }
-    this.createCount++;
-    return new DefaultLogger(
-      `${this.id}:${subId !== undefined ? subId : this.createCount}`,
-      this.writers,
-    );
+
+    return newLogger;
   }
 
-  private write(callback: LoggerWriter, data: any[]) {
-    callback(`[${this.id}]`, ...data);
+  private write(writer: LoggerWriter, data: any[]) {
+    if (this.name) {
+      writer(`[${this.name}]`, ...data);
+    } else {
+      writer(...data);
+    }
   }
 
   debug(...data: any[]): void {
@@ -65,8 +74,8 @@ export class DefaultLogger implements Logger {
     this.beginAt = undefined;
   }
 
-  static of(id: string, writer: LoggerWriter) {
-    return new DefaultLogger(id, {
+  static of(writer: LoggerWriter) {
+    return new DefaultLogger({
       debug: writer,
       info: writer,
       warn: writer,
