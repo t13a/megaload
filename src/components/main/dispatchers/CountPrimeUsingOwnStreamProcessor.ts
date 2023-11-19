@@ -4,7 +4,7 @@ import { DefaultBlockingQueue } from "@/utils/queue";
 import { CountProps, DelayProps, count, format, isPrime } from ".";
 import { Dipatcher } from "../Dispatcher";
 
-export const CountPrimeWithSP =
+export const CountPrimeUsingOwnStreamProcessor =
   ({ from, to }: CountProps, { time }: DelayProps): Dipatcher =>
   async ({ signal, ...context }) => {
     let result = 0;
@@ -19,7 +19,9 @@ export const CountPrimeWithSP =
     const q2 = new DefaultBlockingQueue<number>();
 
     const input = new EmptyInput();
-    const logger = context.logger.create(CountPrimeWithSP.name);
+    const logger = context.logger.create(
+      CountPrimeUsingOwnStreamProcessor.name,
+    );
     await Promise.all([
       q1.enqueueAll(p1({ input, signal, logger })),
       q2.enqueueAll(p2({ input: q1, signal, logger })),

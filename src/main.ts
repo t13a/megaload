@@ -3,9 +3,9 @@ import {
   DispatcherFormController,
 } from "./components/main";
 import {
-  CountPrime,
-  CountPrimeWithSP,
-  CountPrimeWithStreamsAPI,
+  CountPrimeHardCoded,
+  CountPrimeUsingOwnStreamProcessor,
+  CountPrimeUsingStreamsAPI,
 } from "./components/main/dispatchers";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -17,8 +17,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const toInput = getFormItem<HTMLInputElement>(countPropsForm, "to");
 
   const repo = new DefaultDispatcherFactoryRepository();
-  repo.register(CountPrime.name, () =>
-    CountPrime(
+  repo.register(CountPrimeHardCoded.name, () =>
+    CountPrimeHardCoded(
       {
         from: fromInput.valueAsNumber,
         to: toInput.valueAsNumber,
@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       },
     ),
   );
-  repo.register(CountPrimeWithStreamsAPI.name, () =>
-    CountPrimeWithStreamsAPI(
+  repo.register(CountPrimeUsingStreamsAPI.name, () =>
+    CountPrimeUsingStreamsAPI(
       {
         from: fromInput.valueAsNumber,
         to: toInput.valueAsNumber,
@@ -39,8 +39,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       },
     ),
   );
-  repo.register(CountPrimeWithSP.name, () =>
-    CountPrimeWithSP(
+  repo.register(CountPrimeUsingOwnStreamProcessor.name, () =>
+    CountPrimeUsingOwnStreamProcessor(
       {
         from: fromInput.valueAsNumber,
         to: toInput.valueAsNumber,
