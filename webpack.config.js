@@ -12,7 +12,6 @@ module.exports = {
   },
   entry: {
     main: "./src/main.ts",
-    test: "./src/test.ts",
     worker: "./src/worker.ts",
   },
   mode: "production",
