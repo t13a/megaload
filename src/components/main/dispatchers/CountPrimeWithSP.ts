@@ -1,22 +1,17 @@
 import { Consume, Delay, EmptyInput, Filter, Iterate } from "@/features/sp";
 import { consume } from "@/utils";
 import { DefaultBlockingQueue } from "@/utils/queue";
-import { count, format, isPrime } from ".";
+import { CountProps, DelayProps, count, format, isPrime } from ".";
 import { Dipatcher } from "../Dispatcher";
 
-export type CountPrimeWithSPProps = {
-  from: number;
-  to: number;
-};
-
 export const CountPrimeWithSP =
-  ({ from, to }: CountPrimeWithSPProps): Dipatcher =>
+  ({ from, to }: CountProps, { time }: DelayProps): Dipatcher =>
   async ({ signal, ...context }) => {
     let result = 0;
 
     const beginAt = new Date().getTime();
 
-    const p1 = Delay(Iterate(count({ from, to })));
+    const p1 = Delay(Iterate(count({ from, to })), { time });
     const p2 = Filter(isPrime);
     const p3 = Consume(() => result++);
 

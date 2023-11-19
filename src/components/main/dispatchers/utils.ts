@@ -1,10 +1,13 @@
-export const count = ({
-  from = 1,
-  to = Number.MAX_SAFE_INTEGER,
-}: {
+export type CountProps = {
   from: number;
   to: number;
-}) =>
+};
+
+export type DelayProps = {
+  time: number;
+};
+
+export const count = ({ from = 1, to = Number.MAX_SAFE_INTEGER }: CountProps) =>
   (function* () {
     for (let n = from; n <= to; n++) {
       yield n;

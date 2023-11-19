@@ -1,13 +1,8 @@
-import { format, isPrime } from ".";
+import { CountProps, format, isPrime } from ".";
 import { Dipatcher } from "../Dispatcher";
 
-export type CountPrimeWithStreamsAPIProps = {
-  from: number;
-  to: number;
-};
-
 export const CountPrimeWithStreamsAPI =
-  ({ from, to }: CountPrimeWithStreamsAPIProps): Dipatcher =>
+  ({ from, to }: CountProps): Dipatcher =>
   async ({ signal, ...context }) => {
     let result = 0;
 
@@ -31,7 +26,7 @@ export const CountPrimeWithStreamsAPI =
     context.logger.info(`iops = ${format(iops)}`);
   };
 
-const Count = ({ from, to }: CountPrimeWithStreamsAPIProps) => {
+const Count = ({ from, to }: CountProps) => {
   let n = from;
   return new ReadableStream<number>({
     pull(controller) {

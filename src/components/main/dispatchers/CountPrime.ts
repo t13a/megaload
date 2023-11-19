@@ -1,13 +1,8 @@
-import { count, format, isPrime } from ".";
+import { CountProps, count, format, isPrime } from ".";
 import { Dipatcher } from "../Dispatcher";
 
-export type CountPrimeProps = {
-  from: number;
-  to: number;
-};
-
 export const CountPrime =
-  ({ from, to }: CountPrimeProps): Dipatcher =>
+  ({ from, to }: CountProps): Dipatcher =>
   async (context) => {
     let result = 0;
 

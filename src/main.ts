@@ -9,9 +9,12 @@ import {
 } from "./components/main/dispatchers";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const propsForm = getForm("props");
-  const fromInput = getFormItem<HTMLInputElement>(propsForm, "from");
-  const toInput = getFormItem<HTMLInputElement>(propsForm, "to");
+  const delayPropsForm = getForm("delay-props");
+  const timeInput = getFormItem<HTMLInputElement>(delayPropsForm, "time");
+
+  const countPropsForm = getForm("count-props");
+  const fromInput = getFormItem<HTMLInputElement>(countPropsForm, "from");
+  const toInput = getFormItem<HTMLInputElement>(countPropsForm, "to");
 
   const repo = new DefaultDispatcherFactoryRepository();
   repo.register(CountPrime.name, () =>
@@ -27,10 +30,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }),
   );
   repo.register(CountPrimeWithSP.name, () =>
-    CountPrimeWithSP({
-      from: fromInput.valueAsNumber,
-      to: toInput.valueAsNumber,
-    }),
+    CountPrimeWithSP(
+      {
+        from: fromInput.valueAsNumber,
+        to: toInput.valueAsNumber,
+      },
+      {
+        time: timeInput.valueAsNumber,
+      },
+    ),
   );
 
   for (const dispatcherForm of document.querySelectorAll<HTMLFormElement>(

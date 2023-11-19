@@ -43,7 +43,7 @@
       form {
         display: flex;
         flex-flow: column nowrap;
-        margin: 0 auto;
+        margin: 1em auto;
         padding: 0;
         max-width: 48em;
       }
@@ -51,6 +51,10 @@
         flex-flow: row wrap;
         gap: 1em;
         justify-content: right;
+      }
+      form.props > h2 {
+        margin: 0 auto 0 0;
+        padding: 0;
       }
       form.props > div {
         align-items: center;
@@ -72,7 +76,7 @@
         gap: 1em;
         padding: 1em;
       }
-      form.dispatcher > div > h2 {
+      form.dispatcher > div > h3 {
         margin: 0 auto 0 0;
         padding: 0;
       }
@@ -96,7 +100,14 @@
   </head>
   <body>
     <h1>Megaload</h1>
-    <form name="props" class="props">
+    <form name="delay-props" class="props">
+      <div>
+        <label for="time">Delay Threshold (ms)</label>
+        <input name="time" type="number" min="0" value="100" />
+      </div>
+    </form>
+    <form name="count-props" class="props">
+      <h2>Count Prime</h2>
       <div>
         <label for="from">From</label>
         <input name="from" type="number" min="1" value="1" />
@@ -108,7 +119,7 @@
     </form>
     <form name="CountPrime" class="dispatcher">
       <div>
-        <h2>CountPrime</h2>
+        <h3>Hard Coding</h3>
         <button name="run" disabled>Run</button>
         <button name="abort" disabled>Abort</button>
         <button name="clear" disabled>Clear</button>
@@ -117,7 +128,7 @@
     </form>
     <form name="CountPrimeWithSP" class="dispatcher">
       <div>
-        <h2>CountPrimeWithSP</h2>
+        <h3>Using Own Stream Processor</h3>
         <button name="run" disabled>Run</button>
         <button name="abort" disabled>Abort</button>
         <button name="clear" disabled>Clear</button>
@@ -126,7 +137,7 @@
     </form>
     <form name="CountPrimeWithStreamsAPI" class="dispatcher">
       <div>
-        <h2>CountPrimeWithStreamsAPI</h2>
+        <h3>Using Streams API</h3>
         <button name="run" disabled>Run</button>
         <button name="abort" disabled>Abort</button>
         <button name="clear" disabled>Clear</button>
