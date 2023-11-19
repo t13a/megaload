@@ -1,4 +1,4 @@
-import { DefaultLogger, toDefaultLoggerWriters } from "@/utils";
+import { DefaultLogger } from "@/utils";
 import { TestDipatcher } from "./TestDispatcher";
 
 export class TestFormController {
@@ -21,10 +21,12 @@ export class TestFormController {
     this.outputTextArea = this.getItem<HTMLTextAreaElement>("output");
     this.dispatcher = dispatcher;
 
-    this.logger = new DefaultLogger(
-      this.form.name,
-      toDefaultLoggerWriters((...data) => this.writeOutput(...data)),
-    );
+    this.logger = DefaultLogger.of(this.form.name, (...data) => {
+      setTimeout(() => {
+        this.writeOutput(...data);
+        this.updateElements();
+      });
+    });
 
     this.runButton.addEventListener("click", (e) =>
       this.handleRunButtonClick(e),
@@ -67,7 +69,9 @@ export class TestFormController {
       try {
         await this.dispatcher({ signal, logger });
       } catch (error) {
+        console.error(error);
         this.writeOutput(error);
+        this.writeOutput("Failed to run");
       }
 
       this.abortController = undefined;
