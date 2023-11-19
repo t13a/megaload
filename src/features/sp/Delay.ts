@@ -1,20 +1,17 @@
 import { StreamProcessor, StreamProcessorContext } from ".";
 
-export type DelayProps<I, O> = {
-  readonly processor: StreamProcessor<I, O>;
-  readonly threshold: {
-    readonly count?: number;
-    readonly time?: number;
-  };
+export type DelayFactors = {
+  readonly count?: number;
+  readonly time?: number;
 };
 
-export const Delay = <I, O>({
-  processor,
-  threshold = {
-    count: 1000,
-    time: 1000,
+export const Delay = <I, O>(
+  processor: StreamProcessor<I, O>,
+  threshold: DelayFactors = {
+    count: Number.MAX_SAFE_INTEGER,
+    time: 100,
   },
-}: DelayProps<I, O>) =>
+) =>
   async function* ({ input, signal, ...context }: StreamProcessorContext<I>) {
     const logger = context.logger.create(Delay.name);
     logger.begin();
@@ -32,8 +29,6 @@ export const Delay = <I, O>({
         (threshold.count !== undefined && count >= threshold.count) ||
         (threshold.time !== undefined && endAt - beginAt >= threshold.time)
       ) {
-        logger.debug("Threshold exceeded");
-
         count = 0;
         beginAt = endAt;
 
