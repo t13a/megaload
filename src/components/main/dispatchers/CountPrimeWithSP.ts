@@ -1,6 +1,5 @@
-import { Consume, EmptyInput, Filter, Iterate } from "@/features/sp";
+import { Consume, Delay, EmptyInput, Filter, Iterate } from "@/features/sp";
 import { consume } from "@/utils";
-import { EmptyLogger } from "@/utils/logger";
 import { DefaultBlockingQueue } from "@/utils/queue";
 import { count, format, isPrime } from ".";
 import { Dipatcher } from "../Dispatcher";
@@ -17,7 +16,7 @@ export const CountPrimeWithSP =
 
     const beginAt = new Date().getTime();
 
-    const p1 = Iterate(count({ from, to }));
+    const p1 = Delay(Iterate(count({ from, to })));
     const p2 = Filter(isPrime);
     const p3 = Consume(() => result++);
 
@@ -25,7 +24,7 @@ export const CountPrimeWithSP =
     const q2 = new DefaultBlockingQueue<number>();
 
     const input = new EmptyInput();
-    const logger = new EmptyLogger();
+    const logger = context.logger.create(CountPrimeWithSP.name);
     await Promise.all([
       q1.enqueueAll(p1({ input, signal, logger })),
       q2.enqueueAll(p2({ input: q1, signal, logger })),
