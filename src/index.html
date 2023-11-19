@@ -63,24 +63,24 @@
         gap: 0 1em;
         padding: 0;
       }
-      form.dispatcher {
+      form.dispatch {
         background-color: #eee;
         border: 0.125em solid #ddd;
         border-radius: 1em;
         margin: 1em auto;
       }
-      form.dispatcher > div {
+      form.dispatch > div {
         align-items: center;
         display: flex;
         flex-flow: row wrap;
         gap: 1em;
         padding: 1em;
       }
-      form.dispatcher > div > h3 {
+      form.dispatch > div > h3 {
         margin: 0 auto 0 0;
         padding: 0;
       }
-      form.dispatcher > textarea {
+      form.dispatch > textarea {
         background-color: #333;
         border: none;
         border-radius: 0 0 1em 1em;
@@ -92,7 +92,7 @@
         resize: vertical;
         width: 100%;
       }
-      form.dispatcher > textarea.hidden {
+      form.dispatch > textarea.hidden {
         display: none;
       }
     </style>
@@ -117,7 +117,7 @@
         <input name="to" type="number" min="1" value="1000000" />
       </div>
     </form>
-    <form name="CountPrimeHardCoded" class="dispatcher">
+    <form name="CountPrimeHardCoded" class="dispatch">
       <div>
         <h3>Hard Coded</h3>
         <button name="run" disabled>Run</button>
@@ -126,7 +126,7 @@
       </div>
       <textarea name="output" class="hidden" readonly></textarea>
     </form>
-    <form name="CountPrimeUsingOwnStreamProcessor" class="dispatcher">
+    <form name="CountPrimeUsingOwnStreamProcessor" class="dispatch">
       <div>
         <h3>Using Own Stream Processor</h3>
         <button name="run" disabled>Run</button>
@@ -135,7 +135,7 @@
       </div>
       <textarea name="output" class="hidden" readonly></textarea>
     </form>
-    <form name="CountPrimeUsingStreamsAPI" class="dispatcher">
+    <form name="CountPrimeUsingStreamsAPI" class="dispatch">
       <div>
         <h3>Using Streams API</h3>
         <button name="run" disabled>Run</button>

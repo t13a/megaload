@@ -1,12 +1,12 @@
 import {
-  DefaultDispatcherFactoryRepository,
-  DispatcherFormController,
+  DefaultDispatchFactoryRepository,
+  DispatchFormController,
 } from "./components/main";
 import {
   CountPrimeHardCoded,
   CountPrimeUsingOwnStreamProcessor,
   CountPrimeUsingStreamsAPI,
-} from "./components/main/dispatchers";
+} from "./components/main/dispatches";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const delayPropsForm = getForm("delay-props");
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const fromInput = getFormItem<HTMLInputElement>(countPropsForm, "from");
   const toInput = getFormItem<HTMLInputElement>(countPropsForm, "to");
 
-  const repo = new DefaultDispatcherFactoryRepository();
+  const repo = new DefaultDispatchFactoryRepository();
   repo.register(CountPrimeHardCoded.name, () =>
     CountPrimeHardCoded(
       {
@@ -51,26 +51,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     ),
   );
 
-  for (const dispatcherForm of document.querySelectorAll<HTMLFormElement>(
-    "form.dispatcher",
+  for (const dispatchForm of document.querySelectorAll<HTMLFormElement>(
+    "form.dispatch",
   )) {
-    const runButton = getFormItem<HTMLButtonElement>(dispatcherForm, "run");
-    const abortButton = getFormItem<HTMLButtonElement>(dispatcherForm, "abort");
-    const clearButton = getFormItem<HTMLButtonElement>(dispatcherForm, "clear");
+    const runButton = getFormItem<HTMLButtonElement>(dispatchForm, "run");
+    const abortButton = getFormItem<HTMLButtonElement>(dispatchForm, "abort");
+    const clearButton = getFormItem<HTMLButtonElement>(dispatchForm, "clear");
     const outputTextArea = getFormItem<HTMLTextAreaElement>(
-      dispatcherForm,
+      dispatchForm,
       "output",
     );
-    const dispatcherFactory = repo.resolve(dispatcherForm.name);
+    const dispatchFactory = repo.resolve(dispatchForm.name);
 
-    new DispatcherFormController({
+    new DispatchFormController({
       elements: {
         runButton,
         abortButton,
         clearButton,
         outputTextArea,
       },
-      dispatcherFactory,
+      dispatchFactory,
     });
   }
 });

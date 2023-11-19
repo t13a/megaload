@@ -1,8 +1,8 @@
 import { CountProps, DelayProps, count, format, isPrime } from ".";
-import { Dipatcher } from "../Dispatcher";
+import { Dipatch } from "../Dispatch";
 
 export const CountPrimeHardCoded =
-  ({ from, to }: CountProps, { time }: DelayProps): Dipatcher =>
+  ({ from, to }: CountProps, { time }: DelayProps): Dipatch =>
   async ({ signal, ...context }) => {
     let result = 0;
 

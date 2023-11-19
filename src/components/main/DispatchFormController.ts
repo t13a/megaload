@@ -1,33 +1,33 @@
 import { LoggerWriter } from "@/utils/logger";
-import { DispatcherFactory } from ".";
+import { DispatchFactory } from ".";
 
-export type DispatcherFormControllerOptions = {
+export type DispatchFormControllerOptions = {
   readonly elements: {
     readonly runButton: HTMLButtonElement;
     readonly abortButton: HTMLButtonElement;
     readonly clearButton: HTMLButtonElement;
     readonly outputTextArea: HTMLTextAreaElement;
   };
-  readonly dispatcherFactory: DispatcherFactory;
+  readonly dispatchFactory: DispatchFactory;
 };
 
-export class DispatcherFormController {
+export class DispatchFormController {
   private runButton;
   private abortButton;
   private clearButton;
   private outputTextArea;
-  private dispatcherFactory;
+  private dispatchFactory;
   private writer: LoggerWriter;
   private abortController?: AbortController;
   private outputBuffer: string[] = [];
   private outputBufferSize = 1000;
 
-  constructor(options: DispatcherFormControllerOptions) {
+  constructor(options: DispatchFormControllerOptions) {
     this.runButton = options.elements.runButton;
     this.abortButton = options.elements.abortButton;
     this.clearButton = options.elements.clearButton;
     this.outputTextArea = options.elements.outputTextArea;
-    this.dispatcherFactory = options.dispatcherFactory;
+    this.dispatchFactory = options.dispatchFactory;
 
     this.writer = (...data) => {
       setTimeout(() => {
@@ -63,7 +63,7 @@ export class DispatcherFormController {
     const writer = this.writer;
     new Promise(async () => {
       try {
-        await this.dispatcherFactory()({ signal, writer });
+        await this.dispatchFactory()({ signal, writer });
       } catch (error) {
         console.error(error);
         this.writeOutput(error);

@@ -3,10 +3,10 @@ import { consume } from "@/utils";
 import { DefaultLogger } from "@/utils/logger";
 import { DefaultBlockingQueue } from "@/utils/queue";
 import { CountProps, DelayProps, count, format, isPrime } from ".";
-import { Dipatcher } from "../Dispatcher";
+import { Dipatch } from "../Dispatch";
 
 export const CountPrimeUsingOwnStreamProcessor =
-  ({ from, to }: CountProps, { time }: DelayProps): Dipatcher =>
+  ({ from, to }: CountProps, { time }: DelayProps): Dipatch =>
   async ({ signal, ...context }) => {
     let result = 0;
 
