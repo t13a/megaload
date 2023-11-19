@@ -1,4 +1,4 @@
-import { DefaultLogger } from "@/utils/logger";
+import { LoggerWriter } from "@/utils/logger";
 import { DispatcherFactory } from ".";
 
 export type DispatcherFormControllerOptions = {
@@ -17,7 +17,7 @@ export class DispatcherFormController {
   private clearButton;
   private outputTextArea;
   private dispatcherFactory;
-  private logger;
+  private writer: LoggerWriter;
   private abortController?: AbortController;
   private outputBuffer: string[] = [];
   private outputBufferSize = 1000;
@@ -29,12 +29,12 @@ export class DispatcherFormController {
     this.outputTextArea = options.elements.outputTextArea;
     this.dispatcherFactory = options.dispatcherFactory;
 
-    this.logger = DefaultLogger.of((...data) => {
+    this.writer = (...data) => {
       setTimeout(() => {
         this.writeOutput(...data);
         this.updateElements();
       });
-    });
+    };
 
     this.runButton.addEventListener("click", (e) =>
       this.handleRunButtonClick(e),
@@ -60,10 +60,10 @@ export class DispatcherFormController {
     this.updateElements();
 
     const signal = this.abortController.signal;
-    const logger = this.logger.create();
+    const writer = this.writer;
     new Promise(async () => {
       try {
-        await this.dispatcherFactory()({ signal, logger });
+        await this.dispatcherFactory()({ signal, writer });
       } catch (error) {
         console.error(error);
         this.writeOutput(error);

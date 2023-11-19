@@ -25,12 +25,12 @@ export const CountPrimeHardCoded =
 
     const endAt = new Date().getTime();
 
-    context.logger.info(`result = ${format(result)}`);
+    context.writer(`result = ${format(result)}`);
 
     const n = to - from + 1;
     const ms = endAt - beginAt;
     const iops = n / ((endAt - beginAt) / 1000);
-    context.logger.info(`n = ${format(n)} (${format(from)}~${format(to)})`);
-    context.logger.info(`ms = ${format(ms)}`);
-    context.logger.info(`iops = ${format(iops)}`);
+    context.writer(`n = ${format(n)} (${format(from)}~${format(to)})`);
+    context.writer(`ms = ${format(ms)}`);
+    context.writer(`iops = ${format(iops)}`);
   };

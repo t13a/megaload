@@ -1,5 +1,6 @@
 import { Consume, Delay, EmptyInput, Filter, Iterate } from "@/features/sp";
 import { consume } from "@/utils";
+import { DefaultLogger } from "@/utils/logger";
 import { DefaultBlockingQueue } from "@/utils/queue";
 import { CountProps, DelayProps, count, format, isPrime } from ".";
 import { Dipatcher } from "../Dispatcher";
@@ -19,9 +20,7 @@ export const CountPrimeUsingOwnStreamProcessor =
     const q2 = new DefaultBlockingQueue<number>();
 
     const input = new EmptyInput();
-    const logger = context.logger.create(
-      CountPrimeUsingOwnStreamProcessor.name,
-    );
+    const logger = DefaultLogger.of(context.writer);
     await Promise.all([
       q1.enqueueAll(p1({ input, signal, logger })),
       q2.enqueueAll(p2({ input: q1, signal, logger })),
@@ -30,12 +29,12 @@ export const CountPrimeUsingOwnStreamProcessor =
 
     const endAt = new Date().getTime();
 
-    context.logger.info(`result = ${format(result)}`);
+    context.writer(`result = ${format(result)}`);
 
     const n = to - from + 1;
     const ms = endAt - beginAt;
     const iops = n / ((endAt - beginAt) / 1000);
-    context.logger.info(`n = ${format(n)} (${format(from)}~${format(to)})`);
-    context.logger.info(`ms = ${format(ms)}`);
-    context.logger.info(`iops = ${format(iops)}`);
+    context.writer(`n = ${format(n)} (${format(from)}~${format(to)})`);
+    context.writer(`ms = ${format(ms)}`);
+    context.writer(`iops = ${format(iops)}`);
   };
