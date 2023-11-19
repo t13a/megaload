@@ -3,82 +3,134 @@
   <head>
     <meta charset="utf-8" />
     <style>
+      * {
+        font-family: monospace;
+      }
+      body {
+        margin: 1em;
+      }
+      label {
+        text-transform: uppercase;
+      }
+      button,
+      input[type="submit"] {
+        background-color: #fff;
+        border: 0.125em solid #ddd;
+        border-radius: 0.5em;
+        padding: 0.5em 1em;
+        text-transform: uppercase;
+        &:active {
+          border-color: #666;
+        }
+        &:disabled {
+          background-color: #ddd !important;
+          border-color: #ddd !important;
+          color: #999 !important;
+        }
+        &:hover {
+          background-color: #ddd;
+          border-color: #ddd;
+        }
+      }
+      input[type="number"] {
+        background-color: #fff;
+        border: 0.125em solid #ddd;
+        border-radius: 0.5em;
+        padding: 0.5em;
+        text-align: right;
+        width: 8em;
+      }
       form {
-        background-color: #eee;
-        border-radius: 1em;
         display: flex;
-        flex-direction: column;
-        margin: 1em 0;
+        flex-flow: column nowrap;
+        margin: 0 auto;
         padding: 0;
-        * {
-          font-family: monospace;
-        }
-        div {
-          align-items: center;
-          display: flex;
-          flex-flow: row wrap;
-          gap: 1em;
-          padding: 1em;
-          h2 {
-            margin: 0 auto 0 0;
-            padding: 0;
-          }
-          button {
-            background-color: #ccc;
-            border: 0.25em solid #ccc;
-            border-radius: 0.5em;
-            padding: 0.25em 0.5em;
-            text-transform: uppercase;
-            &:active {
-              border-color: #666;
-            }
-            &:disabled {
-              background-color: #ddd;
-              border-color: #ddd;
-              color: #999;
-            }
-            &:hover {
-              background-color: #bbb;
-              border-color: #bbb;
-            }
-          }
-        }
-        textarea {
-          background-color: #333;
-          border: none;
-          border-radius: 0 0 1em 1em;
-          box-sizing: border-box;
-          color: #fff;
-          height: 15em;
-          margin: 0;
-          padding: 0.75em;
-          resize: vertical;
-          width: 100%;
-        }
-        textarea.hidden {
-          display: none;
-        }
+        max-width: 48em;
+      }
+      form.props {
+        flex-flow: row wrap;
+        gap: 1em;
+        justify-content: right;
+      }
+      form.props > div {
+        align-items: center;
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 0 1em;
+        padding: 0;
+      }
+      form.dispatcher {
+        background-color: #eee;
+        border: 0.125em solid #ddd;
+        border-radius: 1em;
+        margin: 1em auto;
+      }
+      form.dispatcher > div {
+        align-items: center;
+        display: flex;
+        flex-flow: row wrap;
+        gap: 1em;
+        padding: 1em;
+      }
+      form.dispatcher > div > h2 {
+        margin: 0 auto 0 0;
+        padding: 0;
+      }
+      form.dispatcher > textarea {
+        background-color: #333;
+        border: none;
+        border-radius: 0 0 1em 1em;
+        box-sizing: border-box;
+        color: #fff;
+        height: 15em;
+        margin: 0;
+        padding: 0.75em;
+        resize: vertical;
+        width: 100%;
+      }
+      form.dispatcher > textarea.hidden {
+        display: none;
       }
     </style>
     <title>Test</title>
   </head>
   <body>
     <h1>Test</h1>
-    <form name="CountQuiet">
+    <form name="props" class="props">
       <div>
-        <h2>CountQuiet</h2>
-        <button name="run">Run</button>
-        <button name="abort">Abort</button>
-        <button name="clear">Clear</button>
+        <label for="from">From</label>
+        <input name="from" type="number" min="1" value="1" />
+      </div>
+      <div>
+        <label for="to">To</label>
+        <input name="to" type="number" min="1" value="1000" />
+      </div>
+      <input type="submit" value="Apply" />
+    </form>
+    <form name="CountPrime" class="dispatcher">
+      <div>
+        <h2>CountPrime</h2>
+        <button name="run" disabled>Run</button>
+        <button name="abort" disabled>Abort</button>
+        <button name="clear" disabled>Clear</button>
       </div>
       <textarea name="output" class="hidden" readonly></textarea>
     </form>
-    <form name="CountVerbose">
+    <form name="CountPrimeWithSP" class="dispatcher">
       <div>
-        <h2>CountVerbose</h2>
-        <button name="run">Run</button>
-        <button name="abort">Abort</button>
-        <button name="clear">Clear</button>
+        <h2>CountPrimeWithSP</h2>
+        <button name="run" disabled>Run</button>
+        <button name="abort" disabled>Abort</button>
+        <button name="clear" disabled>Clear</button>
+      </div>
+      <textarea name="output" class="hidden" readonly></textarea>
+    </form>
+    <form name="CountPrimeWithStreamsAPI" class="dispatcher">
+      <div>
+        <h2>CountPrimeWithStreamsAPI</h2>
+        <button name="run" disabled>Run</button>
+        <button name="abort" disabled>Abort</button>
+        <button name="clear" disabled>Clear</button>
       </div>
       <textarea name="output" class="hidden" readonly></textarea>
     </form>
