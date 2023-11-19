@@ -1,8 +1,17 @@
 import { DefaultLogger } from "@/utils/logger";
 import { DispatcherFactory } from ".";
 
+export type DispatcherFormControllerOptions = {
+  readonly elements: {
+    readonly runButton: HTMLButtonElement;
+    readonly abortButton: HTMLButtonElement;
+    readonly clearButton: HTMLButtonElement;
+    readonly outputTextArea: HTMLTextAreaElement;
+  };
+  readonly dispatcherFactory: DispatcherFactory;
+};
+
 export class DispatcherFormController {
-  private form;
   private runButton;
   private abortButton;
   private clearButton;
@@ -13,15 +22,14 @@ export class DispatcherFormController {
   private outputBuffer: string[] = [];
   private outputBufferSize = 1000;
 
-  constructor(form: HTMLFormElement, dispatcherFactory: DispatcherFactory) {
-    this.form = form;
-    this.runButton = this.getItem<HTMLButtonElement>("run");
-    this.abortButton = this.getItem<HTMLButtonElement>("abort");
-    this.clearButton = this.getItem<HTMLButtonElement>("clear");
-    this.outputTextArea = this.getItem<HTMLTextAreaElement>("output");
-    this.dispatcherFactory = dispatcherFactory;
+  constructor(options: DispatcherFormControllerOptions) {
+    this.runButton = options.elements.runButton;
+    this.abortButton = options.elements.abortButton;
+    this.clearButton = options.elements.clearButton;
+    this.outputTextArea = options.elements.outputTextArea;
+    this.dispatcherFactory = options.dispatcherFactory;
 
-    this.logger = DefaultLogger.of(this.form.name, (...data) => {
+    this.logger = DefaultLogger.of(DispatcherFormController.name, (...data) => {
       setTimeout(() => {
         this.writeOutput(...data);
         this.updateElements();
@@ -40,18 +48,6 @@ export class DispatcherFormController {
 
     this.updateElements();
   }
-
-  private getItem = <T extends Element>(name: string) => {
-    const element = this.form.elements.namedItem(name);
-
-    if (!(element instanceof Element)) {
-      throw new Error(
-        `item ${name} in form ${this.form.name} is not an element`,
-      );
-    }
-
-    return element as T;
-  };
 
   private async handleRunButtonClick(e: Event) {
     e.preventDefault();
