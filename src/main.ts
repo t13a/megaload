@@ -7,6 +7,8 @@ import {
   CountPrimeUsingOwnStreamProcessor,
   CountPrimeUsingStreamsAPI,
 } from "./components/main/dispatches";
+import { CountNumberHardCoded } from "./components/main/dispatches/CountNumberHardCoded";
+import { CountNumberUsingBlockingQueue } from "./components/main/dispatches/CountNumberUsingOwnBlockingQueue";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const delayPropsForm = getForm("delay-props");
@@ -15,6 +17,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const countPropsForm = getForm("count-props");
   const fromInput = getFormItem<HTMLInputElement>(countPropsForm, "from");
   const toInput = getFormItem<HTMLInputElement>(countPropsForm, "to");
+
+  const countNumberPropsForm = getForm("count-number-props");
+  const countNumberFromInput = getFormItem<HTMLInputElement>(
+    countNumberPropsForm,
+    "from",
+  );
+  const countNumberToInput = getFormItem<HTMLInputElement>(
+    countNumberPropsForm,
+    "to",
+  );
 
   const repo = new DefaultDispatchFactoryRepository();
   repo.register(CountPrimeHardCoded.name, () =>
@@ -49,6 +61,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         time: timeInput.valueAsNumber,
       },
     ),
+  );
+  repo.register(CountNumberHardCoded.name, () =>
+    CountNumberHardCoded({
+      from: countNumberFromInput.valueAsNumber,
+      to: countNumberToInput.valueAsNumber,
+    }),
+  );
+  repo.register(CountNumberUsingBlockingQueue.name, () =>
+    CountNumberUsingBlockingQueue({
+      from: countNumberFromInput.valueAsNumber,
+      to: countNumberToInput.valueAsNumber,
+    }),
   );
 
   for (const dispatchForm of document.querySelectorAll<HTMLFormElement>(

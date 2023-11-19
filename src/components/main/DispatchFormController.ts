@@ -1,4 +1,4 @@
-import { LoggerWriter } from "@/utils/logger";
+import { Writer } from "@/utils/logger";
 import { DispatchFactory } from ".";
 
 export type DispatchFormControllerOptions = {
@@ -17,7 +17,7 @@ export class DispatchFormController {
   private clearButton;
   private outputTextArea;
   private dispatchFactory;
-  private writer: LoggerWriter;
+  private writer: Writer;
   private abortController?: AbortController;
   private outputBuffer: string[] = [];
   private outputBufferSize = 1000;

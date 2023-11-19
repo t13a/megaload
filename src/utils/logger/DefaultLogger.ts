@@ -1,12 +1,12 @@
-import { Logger, LoggerWriter } from "./Logger";
+import { Logger, Writer } from "./Logger";
 
 export type DefaultLoggerWriters = {
-  readonly debug: LoggerWriter;
-  readonly info: LoggerWriter;
-  readonly warn: LoggerWriter;
-  readonly error: LoggerWriter;
-  readonly begin: LoggerWriter;
-  readonly end: LoggerWriter;
+  readonly debug: Writer;
+  readonly info: Writer;
+  readonly warn: Writer;
+  readonly error: Writer;
+  readonly begin: Writer;
+  readonly end: Writer;
 };
 
 export class DefaultLogger implements Logger {
@@ -36,7 +36,7 @@ export class DefaultLogger implements Logger {
     return newLogger;
   }
 
-  private write(writer: LoggerWriter, data: any[]) {
+  private write(writer: Writer, data: any[]) {
     if (this.name) {
       writer(`[${this.name}]`, ...data);
     } else {
@@ -74,7 +74,7 @@ export class DefaultLogger implements Logger {
     this.beginAt = undefined;
   }
 
-  static of(writer: LoggerWriter) {
+  static of(writer: Writer) {
     return new DefaultLogger({
       debug: writer,
       info: writer,

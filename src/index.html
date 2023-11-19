@@ -40,6 +40,11 @@
         text-align: right;
         width: 8em;
       }
+      hr {
+        border: 0.125em solid #ddd;
+        margin: 2em auto;
+        max-width: 48em;
+      }
       form {
         display: flex;
         flex-flow: column nowrap;
@@ -92,7 +97,7 @@
         resize: vertical;
         width: 100%;
       }
-      form.dispatch > textarea.hidden {
+      .hidden {
         display: none;
       }
     </style>
@@ -100,6 +105,36 @@
   </head>
   <body>
     <h1>Megaload</h1>
+    <form name="count-number-props" class="props">
+      <h2>Count Number</h2>
+      <div>
+        <label for="from">From</label>
+        <input name="from" type="number" min="1" value="1" />
+      </div>
+      <div>
+        <label for="to">To</label>
+        <input name="to" type="number" min="1" value="1000000" />
+      </div>
+    </form>
+    <form name="CountNumberHardCoded" class="dispatch">
+      <div>
+        <h3>Hard Coded</h3>
+        <button name="run" disabled>Run</button>
+        <button name="abort" class="hidden" disabled>Abort</button>
+        <button name="clear" disabled>Clear</button>
+      </div>
+      <textarea name="output" class="hidden" readonly></textarea>
+    </form>
+    <form name="CountNumberUsingBlockingQueue" class="dispatch">
+      <div>
+        <h3>Using Own Blocking Queue</h3>
+        <button name="run" disabled>Run</button>
+        <button name="abort" class="hidden" disabled>Abort</button>
+        <button name="clear" disabled>Clear</button>
+      </div>
+      <textarea name="output" class="hidden" readonly></textarea>
+    </form>
+    <hr />
     <form name="delay-props" class="props">
       <div>
         <label for="time">Delay Threshold (ms)</label>
