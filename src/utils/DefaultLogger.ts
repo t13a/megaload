@@ -9,38 +9,15 @@ export type DefaultLoggerWriters = {
   readonly end: LoggerWriter;
 };
 
-export const toDefaultLoggerWriters = (
-  writer: LoggerWriter,
-): DefaultLoggerWriters => {
-  return {
-    debug: writer,
-    info: writer,
-    warn: writer,
-    error: writer,
-    begin: writer,
-    end: writer,
-  };
-};
-
 export class DefaultLogger implements Logger {
   readonly id: string;
   readonly writers: DefaultLoggerWriters;
   private createCount: number = 0;
   private beginAt: number | undefined;
 
-  constructor(
-    id: string,
-    callbacks: DefaultLoggerWriters = {
-      debug: console.debug,
-      info: console.info,
-      warn: console.warn,
-      error: console.error,
-      begin: console.debug,
-      end: console.debug,
-    },
-  ) {
+  constructor(id: string, writers: DefaultLoggerWriters) {
     this.id = id;
-    this.writers = callbacks;
+    this.writers = writers;
   }
 
   create(subId?: string | undefined): Logger {
@@ -75,16 +52,27 @@ export class DefaultLogger implements Logger {
   }
 
   begin(): void {
-    const now = performance.now();
+    const now = new Date().getTime();
     this.beginAt = now;
     this.write(this.writers.begin, ["BEGIN"]);
   }
 
   end(): void {
-    const now = performance.now();
+    const now = new Date().getTime();
     this.write(this.writers.end, [
       `END (${this.beginAt ? now - this.beginAt : "?"} ms)`,
     ]);
     this.beginAt = undefined;
+  }
+
+  static of(id: string, writer: LoggerWriter) {
+    return new DefaultLogger(id, {
+      debug: writer,
+      info: writer,
+      warn: writer,
+      error: writer,
+      begin: writer,
+      end: writer,
+    });
   }
 }

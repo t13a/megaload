@@ -1,4 +1,4 @@
-import { BlockingQueue } from "@/utils";
+import { DefaultBlockingQueue } from "@/utils/queue";
 import papaparse from "papaparse";
 import { LoadGenerator } from "..";
 
@@ -20,7 +20,7 @@ export class ParseFile implements LoadGenerator {
         return;
       }
 
-      const queue = new BlockingQueue();
+      const queue = new DefaultBlockingQueue();
 
       // FIXME: Could not stop to parse.
       papaparse.parse(file, {
