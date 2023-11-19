@@ -1,14 +1,14 @@
-import { CountProps, format, isPrime } from ".";
+import { CountProps, DelayProps, format, isPrime } from ".";
 import { Dipatcher } from "../Dispatcher";
 
 export const CountPrimeWithStreamsAPI =
-  ({ from, to }: CountProps): Dipatcher =>
+  ({ from, to }: CountProps, { time }: DelayProps): Dipatcher =>
   async ({ signal, ...context }) => {
     let result = 0;
 
     const beginAt = new Date().getTime();
 
-    const r1 = Count({ from, to });
+    const r1 = Count({ from, to }, { time }, signal);
     const t1 = Filter(isPrime);
     const w1 = Consumer((n: number) => result++);
 
@@ -26,10 +26,24 @@ export const CountPrimeWithStreamsAPI =
     context.logger.info(`iops = ${format(iops)}`);
   };
 
-const Count = ({ from, to }: CountProps) => {
+const Count = (
+  { from, to }: CountProps,
+  { time }: DelayProps,
+  signal: AbortSignal,
+) => {
   let n = from;
+  let t1 = new Date().getTime();
   return new ReadableStream<number>({
-    pull(controller) {
+    async pull(controller) {
+      const t2 = new Date().getTime();
+      if (t2 - t1 >= time) {
+        await new Promise((resolve) => setTimeout(resolve));
+        t1 = t2;
+      }
+      if (signal.aborted) {
+        controller.close();
+        return;
+      }
       if (n < to) {
         controller.enqueue(n);
         n++;

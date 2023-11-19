@@ -24,10 +24,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }),
   );
   repo.register(CountPrimeWithStreamsAPI.name, () =>
-    CountPrimeWithStreamsAPI({
-      from: fromInput.valueAsNumber,
-      to: toInput.valueAsNumber,
-    }),
+    CountPrimeWithStreamsAPI(
+      {
+        from: fromInput.valueAsNumber,
+        to: toInput.valueAsNumber,
+      },
+      {
+        time: timeInput.valueAsNumber,
+      },
+    ),
   );
   repo.register(CountPrimeWithSP.name, () =>
     CountPrimeWithSP(
