@@ -1,4 +1,4 @@
-export type WriteToCallbackProps<W> = (chunk: W) => void | PromiseLike<void>;
+export type WriteToCallbackProps<W> = (chunk: W) => any | PromiseLike<any>;
 
 export const WriteToCallback = <W>(callback: WriteToCallbackProps<W>) => {
   return new WritableStream<W>({
