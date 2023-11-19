@@ -1,5 +1,5 @@
 import { DefaultLogger } from "@/utils/logger";
-import { Dipatcher } from "./Dispatcher";
+import { DispatcherFactory } from ".";
 
 export class DispatcherFormController {
   private form;
@@ -7,19 +7,19 @@ export class DispatcherFormController {
   private abortButton;
   private clearButton;
   private outputTextArea;
-  private dispatcher;
+  private dispatcherFactory;
   private logger;
   private abortController?: AbortController;
   private outputBuffer: string[] = [];
   private outputBufferSize = 1000;
 
-  constructor(form: HTMLFormElement, dispatcher: Dipatcher) {
+  constructor(form: HTMLFormElement, dispatcherFactory: DispatcherFactory) {
     this.form = form;
     this.runButton = this.getItem<HTMLButtonElement>("run");
     this.abortButton = this.getItem<HTMLButtonElement>("abort");
     this.clearButton = this.getItem<HTMLButtonElement>("clear");
     this.outputTextArea = this.getItem<HTMLTextAreaElement>("output");
-    this.dispatcher = dispatcher;
+    this.dispatcherFactory = dispatcherFactory;
 
     this.logger = DefaultLogger.of(this.form.name, (...data) => {
       setTimeout(() => {
@@ -67,7 +67,7 @@ export class DispatcherFormController {
     const logger = this.logger.create();
     new Promise(async () => {
       try {
-        await this.dispatcher({ signal, logger });
+        await this.dispatcherFactory()({ signal, logger });
       } catch (error) {
         console.error(error);
         this.writeOutput(error);
