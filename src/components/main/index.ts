@@ -1,3 +1,3 @@
-export * from "./TestDispatcher";
-export * from "./TestDispatcherRepository";
-export * from "./TestFormController";
+export * from "./Dispatcher";
+export * from "./DispatcherFormController";
+export * from "./DispatcherRepository";

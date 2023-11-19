@@ -1,5 +1,5 @@
 import { format, isPrime } from ".";
-import { TestDipatcher } from "../TestDispatcher";
+import { Dipatcher } from "../Dispatcher";
 
 export type CountPrimeWithStreamsAPIProps = {
   from: number;
@@ -7,7 +7,7 @@ export type CountPrimeWithStreamsAPIProps = {
 };
 
 export const CountPrimeWithStreamsAPI =
-  ({ from, to }: CountPrimeWithStreamsAPIProps): TestDipatcher =>
+  ({ from, to }: CountPrimeWithStreamsAPIProps): Dipatcher =>
   async ({ signal, ...context }) => {
     let result = 0;
 

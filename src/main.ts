@@ -1,7 +1,7 @@
 import assert from "assert";
 import {
-  TestDispatcherRepository,
-  TestFormController,
+  DispatcherFormController,
+  DispatcherRepository,
 } from "./components/main";
 import {
   CountPrime,
@@ -24,7 +24,7 @@ const toInput = propsForm.elements.namedItem("to");
 assert(toInput instanceof HTMLInputElement);
 toInput.valueAsNumber = to;
 
-const repo = new TestDispatcherRepository();
+const repo = new DispatcherRepository();
 repo.register(CountPrime.name, CountPrime({ from, to }));
 repo.register(
   CountPrimeWithStreamsAPI.name,
@@ -37,6 +37,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     "form.dispatcher",
   )) {
     console.info(`loading controller: ${form.name}`);
-    new TestFormController(form, repo.resolve(form.name));
+    new DispatcherFormController(form, repo.resolve(form.name));
   }
 });

@@ -3,7 +3,7 @@ import { consume } from "@/utils";
 import { EmptyLogger } from "@/utils/logger";
 import { DefaultBlockingQueue } from "@/utils/queue";
 import { count, format, isPrime } from ".";
-import { TestDipatcher } from "../TestDispatcher";
+import { Dipatcher } from "../Dispatcher";
 
 export type CountPrimeWithSPProps = {
   from: number;
@@ -11,7 +11,7 @@ export type CountPrimeWithSPProps = {
 };
 
 export const CountPrimeWithSP =
-  ({ from, to }: CountPrimeWithSPProps): TestDipatcher =>
+  ({ from, to }: CountPrimeWithSPProps): Dipatcher =>
   async ({ signal, ...context }) => {
     let result = 0;
 

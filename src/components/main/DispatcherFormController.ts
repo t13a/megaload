@@ -1,7 +1,7 @@
 import { DefaultLogger } from "@/utils/logger";
-import { TestDipatcher } from "./TestDispatcher";
+import { Dipatcher } from "./Dispatcher";
 
-export class TestFormController {
+export class DispatcherFormController {
   private form;
   private runButton;
   private abortButton;
@@ -13,7 +13,7 @@ export class TestFormController {
   private outputBuffer: string[] = [];
   private outputBufferSize = 1000;
 
-  constructor(form: HTMLFormElement, dispatcher: TestDipatcher) {
+  constructor(form: HTMLFormElement, dispatcher: Dipatcher) {
     this.form = form;
     this.runButton = this.getItem<HTMLButtonElement>("run");
     this.abortButton = this.getItem<HTMLButtonElement>("abort");

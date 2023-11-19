@@ -1,9 +1,9 @@
-import { TestDipatcher } from ".";
+import { Dipatcher } from ".";
 
-export class TestDispatcherRepository {
-  private map = new Map<string, TestDipatcher>();
+export class DispatcherRepository {
+  private map = new Map<string, Dipatcher>();
 
-  register(name: string, dispatcher: TestDipatcher) {
+  register(name: string, dispatcher: Dipatcher) {
     this.map.set(name, dispatcher);
   }
 
