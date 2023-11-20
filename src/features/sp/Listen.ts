@@ -1,19 +1,19 @@
 import { StreamProcessor, StreamProcessorContext } from ".";
 
-export type DelayFactors = {
+export type ListenThresholdFactors = {
   readonly count?: number;
   readonly time?: number;
 };
 
-export const Delay = <I, O>(
+export const Listen = <I, O>(
   processor: StreamProcessor<I, O>,
-  threshold: DelayFactors = {
+  threshold: ListenThresholdFactors = {
     count: Number.MAX_SAFE_INTEGER,
     time: 100,
   },
 ) =>
   async function* ({ input, signal, ...context }: StreamProcessorContext<I>) {
-    const logger = context.logger.create(Delay.name);
+    const logger = context.logger.create(Listen.name);
     logger.begin();
 
     let count = 0;
