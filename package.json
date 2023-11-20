@@ -33,6 +33,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@types/wicg-file-system-access": "^2023.10.3",
     "papaparse": "^5.4.1"
   }
 }

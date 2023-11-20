@@ -3,12 +3,13 @@ import {
   DispatchFormController,
 } from "./components/main";
 import {
+  CountNumberHardCoded,
+  CountNumberUsingBlockingQueue,
   CountPrimeHardCoded,
   CountPrimeUsingOwnStreamProcessor,
   CountPrimeUsingStreamsAPI,
+  OpenFileDirectly,
 } from "./components/main/dispatches";
-import { CountNumberHardCoded } from "./components/main/dispatches/CountNumberHardCoded";
-import { CountNumberUsingBlockingQueue } from "./components/main/dispatches/CountNumberUsingOwnBlockingQueue";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const countPrimePropsForm = getForm("count-prime-props");
@@ -34,6 +35,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     countNumberPropsForm,
     "to",
   );
+
+  let fileHandle: FileSystemFileHandle | undefined = undefined;
+  const openFilePropsForm = getForm("open-file-props");
+  const fileInput = getFormItem<HTMLInputElement>(openFilePropsForm, "file");
+  const openFileButton = getFormItem<HTMLButtonElement>(
+    openFilePropsForm,
+    "open-file",
+  );
+  openFileButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+    fileHandle = (await window.showOpenFilePicker())[0];
+    fileInput.value = fileHandle.name;
+  });
 
   const repo = new DefaultDispatchFactoryRepository();
   repo.register(CountPrimeHardCoded.name, () =>
@@ -81,6 +95,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       to: countNumberToInput.valueAsNumber,
     }),
   );
+  repo.register(OpenFileDirectly.name, () => {
+    if (!fileHandle) {
+      window.alert("File is not opened");
+      throw new Error("File is not opened");
+    }
+    return OpenFileDirectly({ fileHandle });
+  });
 
   for (const dispatchForm of document.querySelectorAll<HTMLFormElement>(
     "form.dispatch",

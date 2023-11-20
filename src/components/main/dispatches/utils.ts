@@ -1,11 +1,4 @@
-export type CountProps = {
-  from: number;
-  to: number;
-};
-
-export type DelayProps = {
-  time: number;
-};
+import { CountProps } from ".";
 
 export const count = ({ from = 1, to = Number.MAX_SAFE_INTEGER }: CountProps) =>
   (function* () {
