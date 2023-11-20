@@ -20,20 +20,20 @@ export const Listen = <I, O>(
     let beginAt = new Date().getTime();
 
     for await (const value of processor({ input, signal, logger })) {
-      yield value;
-
       count++;
-      const endAt = new Date().getTime();
+      const time = new Date().getTime() - beginAt;
 
       if (
         (threshold.count !== undefined && count >= threshold.count) ||
-        (threshold.time !== undefined && endAt - beginAt >= threshold.time)
+        (threshold.time !== undefined && time >= threshold.time)
       ) {
-        count = 0;
-        beginAt = endAt;
-
         await new Promise((resolve) => setTimeout(resolve));
+
+        count = 0;
+        beginAt = new Date().getTime();
       }
+
+      yield value;
     }
 
     logger.end();
