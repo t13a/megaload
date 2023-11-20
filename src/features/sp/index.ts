@@ -4,6 +4,7 @@ export * from "./EmptyInput";
 export * from "./Filter";
 export * from "./Iterate";
 export * from "./Map";
+export * from "./Range";
 export * from "./Reduce";
 export * from "./StreamProcessor";
 export * from "./Timeout";

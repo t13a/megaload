@@ -1,10 +1,10 @@
 import { EmptyLogger } from "@/utils/logger";
 import { EmptyInput } from ".";
-import { Iota } from "./Iota";
+import { Range } from "./Range";
 
-describe("Iota", () => {
+describe("Range", () => {
   it("returns numbers starting from zero", async () => {
-    const processor = Iota({});
+    const processor = Range({});
 
     const input = new EmptyInput();
     const signal = new AbortController().signal;
@@ -19,8 +19,8 @@ describe("Iota", () => {
     expect((await asyncIterator.next()).value).toBe(4);
   });
 
-  it("returns numbers starting `first` to before `last`", async () => {
-    const processor = Iota({ first: 2, last: 4 });
+  it("returns numbers starting `start` to before `end`", async () => {
+    const processor = Range({ start: 2, end: 4 });
 
     const input = new EmptyInput();
     const signal = new AbortController().signal;
@@ -33,8 +33,8 @@ describe("Iota", () => {
     expect((await asyncIterator.next()).done).toBe(true);
   });
 
-  it("returns nothing if `first` is larger than `last`", async () => {
-    const processor = Iota({ first: 4, last: 2 });
+  it("returns nothing if `start` is larger than `end`", async () => {
+    const processor = Range({ start: 4, end: 2 });
 
     const input = new EmptyInput();
     const signal = new AbortController().signal;
@@ -45,8 +45,8 @@ describe("Iota", () => {
     expect((await asyncIterator.next()).done).toBe(true);
   });
 
-  it("returns nothing if `first` and `last` is equal", async () => {
-    const processor = Iota({ first: 3, last: 3 });
+  it("returns nothing if `start` and `end` is equal", async () => {
+    const processor = Range({ start: 3, end: 3 });
 
     const input = new EmptyInput();
     const signal = new AbortController().signal;
