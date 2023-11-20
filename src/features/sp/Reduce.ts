@@ -1,14 +1,9 @@
 import { StreamProcessor } from ".";
 
-export type ReduceProps<I, O> = {
-  readonly callback: (output: O, value: I) => O;
-  readonly initialValue: O;
-};
-
-export const Reduce = <I, O>({
-  callback,
-  initialValue,
-}: ReduceProps<I, O>): StreamProcessor<I, O> =>
+export const Reduce = <I, O>(
+  callback: (output: O, value: I) => O,
+  initialValue: O,
+): StreamProcessor<I, O> =>
   async function* ({ input, signal, ...context }) {
     const logger = context.logger.create(Reduce.name);
     logger.begin();
