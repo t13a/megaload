@@ -1,4 +1,4 @@
-import { Delay, EmptyInput, Filter, Iterate, Reduce } from "@/features/sp";
+import { EmptyInput, Filter, Iterate, Listen, Reduce } from "@/features/sp";
 import { toArray } from "@/utils";
 import { DefaultLogger } from "@/utils/logger";
 import { CountProps, DelayProps, count, format, isPrime } from ".";
@@ -9,7 +9,7 @@ export const CountPrimeUsingOwnStreamProcessor =
   async ({ signal, ...context }) => {
     const beginAt = new Date().getTime();
 
-    const p1 = Delay(Iterate(count({ from, to })), { time });
+    const p1 = Listen(Iterate(count({ from, to })), { time });
     const p2 = Filter(isPrime);
     const p3 = Reduce((count: number) => ++count, 0);
 
