@@ -1,12 +1,11 @@
-import { StreamProcessor, StreamProcessorContext } from ".";
+import { StreamProcessorContext } from ".";
 
 export type ListenThresholdFactors = {
   readonly count?: number;
   readonly time?: number;
 };
 
-export const Listen = <I, O>(
-  processor: StreamProcessor<I, O>,
+export const Listen = <I>(
   threshold: ListenThresholdFactors = {
     count: Number.MAX_SAFE_INTEGER,
     time: 100,
@@ -19,7 +18,11 @@ export const Listen = <I, O>(
     let count = 0;
     let beginAt = new Date().getTime();
 
-    for await (const value of processor({ input, signal, logger })) {
+    for await (const value of input) {
+      if (signal.aborted) {
+        break;
+      }
+
       count++;
       const time = new Date().getTime() - beginAt;
 

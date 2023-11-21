@@ -10,6 +10,8 @@ import {
   CountPrimeUsingStreamsAPI,
   OpenFileDirectly,
 } from "./components/main/dispatches";
+import { TestPause } from "./components/main/dispatches/TestPause";
+import { PauseController } from "./features/sp";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const countPrimePropsForm = getForm("count-prime-props");
@@ -47,6 +49,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     fileHandle = (await window.showOpenFilePicker())[0];
     fileInput.value = fileHandle.name;
+  });
+
+  const pauseController = new PauseController();
+  const testPauseForm = getForm("TestPause");
+  const pauseButton = getFormItem<HTMLButtonElement>(testPauseForm, "pause");
+  pauseButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    pauseController.pause();
+  });
+  const resumeButton = getFormItem<HTMLButtonElement>(testPauseForm, "resume");
+  resumeButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    pauseController.resume();
   });
 
   const repo = new DefaultDispatchFactoryRepository();
@@ -101,6 +116,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       throw new Error("File is not opened");
     }
     return OpenFileDirectly({ fileHandle });
+  });
+  repo.register(TestPause.name, () => {
+    return TestPause(pauseController.signal);
   });
 
   for (const dispatchForm of document.querySelectorAll<HTMLFormElement>(

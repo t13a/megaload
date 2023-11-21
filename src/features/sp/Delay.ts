@@ -1,11 +1,15 @@
-import { StreamProcessor, StreamProcessorContext } from ".";
+import { StreamProcessorContext } from ".";
 
-export const Delay = <I, O>(processor: StreamProcessor<I, O>, time: number) =>
+export const Delay = <I, O>(time: number) =>
   async function* ({ input, signal, ...context }: StreamProcessorContext<I>) {
     const logger = context.logger.create(Delay.name);
     logger.begin();
 
-    for await (const value of processor({ input, signal, logger })) {
+    for await (const value of input) {
+      if (signal.aborted) {
+        break;
+      }
+
       await new Promise((resolve) => setTimeout(resolve, time));
 
       yield value;

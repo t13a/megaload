@@ -154,6 +154,8 @@
           <textarea name="output" class="hidden" readonly></textarea>
         </form>
       </div>
+    </div>
+    <div class="content">
       <form name="count-prime-props" class="props">
         <h2>Count Prime</h2>
         <div>
@@ -197,24 +199,38 @@
           </div>
           <textarea name="output" class="hidden" readonly></textarea>
         </form>
-        <form name="open-file-props" class="props">
-          <h2>Open File</h2>
+      </div>
+    </div>
+    <div class="content">
+      <form name="open-file-props" class="props">
+        <h2>Open File</h2>
+        <div>
+          <label for="file">File</label>
+          <input name="file" type="text" readonly />
+          <button name="open-file">Open File</button>
+        </div>
+      </form>
+      <div class="dispatches">
+        <form name="OpenFileDirectly" class="dispatch">
           <div>
-            <label for="file">File</label>
-            <input name="file" type="text" readonly />
-            <button name="open-file">Open File</button>
+            <h3>Directly</h3>
+            <button name="run" disabled>Run</button>
+            <button name="abort" disabled>Abort</button>
+            <button name="clear" disabled>Clear</button>
           </div>
+          <textarea name="output" class="hidden" readonly></textarea>
         </form>
-        <div class="dispatches">
-          <form name="OpenFileDirectly" class="dispatch">
-            <div>
-              <h3>Directly</h3>
-              <button name="run" disabled>Run</button>
-              <button name="abort" disabled>Abort</button>
-              <button name="clear" disabled>Clear</button>
-            </div>
-            <textarea name="output" class="hidden" readonly></textarea>
-          </form>
+        <form name="TestPause" class="dispatch">
+          <div>
+            <h3>TestPause</h3>
+            <button name="run" disabled>Run</button>
+            <button name="pause">Pause</button>
+            <button name="resume">Resume</button>
+            <button name="abort" disabled>Abort</button>
+            <button name="clear" disabled>Clear</button>
+          </div>
+          <textarea name="output" class="hidden" readonly></textarea>
+        </form>
       </div>
     </div>
     <script src="main.bundle.js"></script>

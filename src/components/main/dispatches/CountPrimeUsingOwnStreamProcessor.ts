@@ -9,15 +9,17 @@ export const CountPrimeUsingOwnStreamProcessor =
   async ({ signal, ...context }) => {
     const beginAt = new Date().getTime();
 
-    const p1 = Listen(Iterate(count({ from, to })), { time });
-    const p2 = Filter(isPrime);
-    const p3 = Reduce((count: number) => ++count, 0);
+    const p1 = Iterate(count({ from, to }));
+    const p2 = Listen<number>({ time });
+    const p3 = Filter(isPrime);
+    const p4 = Reduce((count: number) => ++count, 0);
 
     const logger = DefaultLogger.of(context.writer);
     const p1i = p1({ input: new EmptyInput(), signal, logger });
     const p2i = p2({ input: p1i, signal, logger });
     const p3i = p3({ input: p2i, signal, logger });
-    const result = await toArray(p3i);
+    const p4i = p4({ input: p3i, signal, logger });
+    const result = await toArray(p4i);
 
     const endAt = new Date().getTime();
 

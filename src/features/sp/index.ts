@@ -5,7 +5,7 @@ export * from "./Filter";
 export * from "./Iterate";
 export * from "./Listen";
 export * from "./Map";
+export * from "./Pause";
 export * from "./Range";
 export * from "./Reduce";
 export * from "./StreamProcessor";
-export * from "./Timeout";
