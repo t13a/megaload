@@ -1,4 +1,5 @@
 export * from "./Consume";
+export * from "./Delay";
 export * from "./EmptyInput";
 export * from "./Filter";
 export * from "./Iterate";
