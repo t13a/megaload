@@ -1,4 +1,4 @@
-import { CountProps, DelayProps, format, isPrime } from ".";
+import { CountProps, DelayProps, formatNumber, isPrime } from ".";
 import { Dipatch } from "../Dispatch";
 
 export const CountPrimeUsingStreamsAPI =
@@ -16,14 +16,16 @@ export const CountPrimeUsingStreamsAPI =
 
     const endAt = new Date().getTime();
 
-    context.writer(`result = ${format(result)}`);
+    context.writer(`result = ${formatNumber(result)}`);
 
     const n = to - from + 1;
     const ms = endAt - beginAt;
     const iops = n / ((endAt - beginAt) / 1000);
-    context.writer(`n = ${format(n)} (${format(from)}~${format(to)})`);
-    context.writer(`ms = ${format(ms)}`);
-    context.writer(`iops = ${format(iops)}`);
+    context.writer(
+      `n = ${formatNumber(n)} (${formatNumber(from)}~${formatNumber(to)})`,
+    );
+    context.writer(`ms = ${formatNumber(ms)}`);
+    context.writer(`iops = ${formatNumber(iops)}`);
   };
 
 const Count = (

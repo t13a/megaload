@@ -1,4 +1,4 @@
-import { FileProps, format } from ".";
+import { FileProps, formatNumber } from ".";
 import { Dipatch } from "../Dispatch";
 
 export const OpenFileDirectly =
@@ -17,6 +17,6 @@ export const OpenFileDirectly =
     writer(text);
     writer();
     writer(`type = ${type}`);
-    writer(`size = ${format(size)} bytes`);
-    writer(`ms = ${format(ms)}`);
+    writer(`size = ${formatNumber(size)} bytes`);
+    writer(`ms = ${formatNumber(ms)}`);
   };

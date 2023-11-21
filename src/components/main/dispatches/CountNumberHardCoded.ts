@@ -1,4 +1,4 @@
-import { CountProps, count as countFn, format } from ".";
+import { CountProps, formatNumber } from ".";
 import { Dipatch } from "../Dispatch";
 
 export const CountNumberHardCoded =
@@ -8,16 +8,16 @@ export const CountNumberHardCoded =
 
     const beginAt = new Date().getTime();
 
-    for (const n of countFn({ from, to })) {
+    for (let n = from; n <= to; n++) {
       count++;
     }
 
     const endAt = new Date().getTime();
 
-    writer(`count = ${format(count)}`);
+    writer(`count = ${formatNumber(count)}`);
 
     const ms = endAt - beginAt;
     const iops = count / ((endAt - beginAt) / 1000);
-    writer(`ms = ${format(ms)}`);
-    writer(`iops = ${format(iops)}`);
+    writer(`ms = ${formatNumber(ms)}`);
+    writer(`iops = ${formatNumber(iops)}`);
   };

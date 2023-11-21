@@ -1,6 +1,6 @@
 import { consume } from "@/utils";
 import { DefaultBlockingQueue } from "@/utils/queue";
-import { CountProps, format } from ".";
+import { CountProps, formatNumber } from ".";
 import { Dipatch } from "../Dispatch";
 
 export const CountNumberUsingBlockingQueue =
@@ -23,10 +23,10 @@ export const CountNumberUsingBlockingQueue =
 
     const endAt = new Date().getTime();
 
-    writer(`count = ${format(count)}`);
+    writer(`count = ${formatNumber(count)}`);
 
     const ms = endAt - beginAt;
     const iops = count / ((endAt - beginAt) / 1000);
-    writer(`ms = ${format(ms)}`);
-    writer(`iops = ${format(iops)}`);
+    writer(`ms = ${formatNumber(ms)}`);
+    writer(`iops = ${formatNumber(iops)}`);
   };

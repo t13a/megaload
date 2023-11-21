@@ -1,10 +1,4 @@
-import {
-  CountProps,
-  DelayProps,
-  count as countNumber,
-  format,
-  isPrime,
-} from ".";
+import { CountProps, DelayProps, formatNumber, isPrime } from ".";
 import { Dipatch } from "../Dispatch";
 
 export const CountPrimeHardCoded =
@@ -12,16 +6,16 @@ export const CountPrimeHardCoded =
   async ({ signal, ...context }) => {
     const beginAt = new Date().getTime();
 
-    // Initialize result.
+    // Initialize variables;
     let result = 0;
-
-    // Initialize start time.
     let startTime = new Date().getTime();
 
-    // Enumerate numbers.
-    for (const n of countNumber({ from, to })) {
-      // Listen events if threshold time exceeded.
+    // Loop the procedure.
+    for (let n = from; n <= to; n++) {
+      // Get process time.
       const processTime = new Date().getTime() - startTime;
+
+      // Listen events if threshold time exceeded.
       if (processTime >= time) {
         await new Promise((resolve) => setTimeout(resolve));
         startTime = new Date().getTime();
@@ -42,8 +36,10 @@ export const CountPrimeHardCoded =
     const n = to - from + 1;
     const ms = endAt - beginAt;
     const iops = n / ((endAt - beginAt) / 1000);
-    context.writer(`result = ${format(result)}`);
-    context.writer(`n = ${format(n)} (${format(from)}~${format(to)})`);
-    context.writer(`ms = ${format(ms)}`);
-    context.writer(`iops = ${format(iops)}`);
+    context.writer(`result = ${formatNumber(result)}`);
+    context.writer(
+      `n = ${formatNumber(n)} (${formatNumber(from)}~${formatNumber(to)})`,
+    );
+    context.writer(`ms = ${formatNumber(ms)}`);
+    context.writer(`iops = ${formatNumber(iops)}`);
   };

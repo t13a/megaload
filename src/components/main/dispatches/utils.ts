@@ -1,13 +1,4 @@
-import { CountProps } from ".";
-
-export const count = ({ from = 1, to = Number.MAX_SAFE_INTEGER }: CountProps) =>
-  (function* () {
-    for (let n = from; n <= to; n++) {
-      yield n;
-    }
-  })();
-
-export const format = (value: number | bigint) =>
+export const formatNumber = (value: number | bigint) =>
   new Intl.NumberFormat().format(value);
 
 export const isPrime = (n: number) => {
