@@ -1,7 +1,20 @@
-import { EmptyInput, Filter, Iterate, Listen, Reduce } from "@/features/sp";
+import {
+  EmptyInput,
+  Filter,
+  Iterate,
+  Listen,
+  PipelineBuilder,
+  Reduce,
+} from "@/features/sp";
 import { toArray } from "@/utils";
 import { DefaultLogger } from "@/utils/logger";
-import { CountProps, DelayProps, count, format, isPrime } from ".";
+import {
+  CountProps,
+  DelayProps,
+  count as countNumber,
+  format,
+  isPrime,
+} from ".";
 import { Dipatch } from "../Dispatch";
 
 export const CountPrimeUsingOwnStreamProcessor =
@@ -9,25 +22,24 @@ export const CountPrimeUsingOwnStreamProcessor =
   async ({ signal, ...context }) => {
     const beginAt = new Date().getTime();
 
-    const p1 = Iterate(count({ from, to }));
-    const p2 = Listen<number>({ time });
-    const p3 = Filter(isPrime);
-    const p4 = Reduce((count: number) => ++count, 0);
-
+    // Build the pipeline.
+    const input = new EmptyInput();
     const logger = DefaultLogger.of(context.writer);
-    const p1i = p1({ input: new EmptyInput(), signal, logger });
-    const p2i = p2({ input: p1i, signal, logger });
-    const p3i = p3({ input: p2i, signal, logger });
-    const p4i = p4({ input: p3i, signal, logger });
-    const result = await toArray(p4i);
+    const pipeline = new PipelineBuilder({ input, signal, logger })
+      .through(Iterate(countNumber({ from, to }))) // Enumerate numbers.
+      .through(Listen({ time })) // Listen events if threshold time exceeded.
+      .through(Filter(isPrime)) // Output if number is prime.
+      .through(Reduce((output: number) => ++output, 0)) // Increment result.
+      .build();
+
+    // Run the pipeline.
+    const result = await toArray(pipeline);
 
     const endAt = new Date().getTime();
-
-    context.writer(`result = ${result}`);
-
     const n = to - from + 1;
     const ms = endAt - beginAt;
     const iops = n / ((endAt - beginAt) / 1000);
+    context.writer(`count = ${result}`);
     context.writer(`n = ${format(n)} (${format(from)}~${format(to)})`);
     context.writer(`ms = ${format(ms)}`);
     context.writer(`iops = ${format(iops)}`);

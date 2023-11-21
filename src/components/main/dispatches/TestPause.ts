@@ -4,6 +4,7 @@ import {
   Listen,
   Pause,
   PauseSignal,
+  PipelineBuilder,
   Range,
 } from "@/features/sp";
 import { consume } from "@/utils";
@@ -16,15 +17,12 @@ export const TestPause =
     const input = new EmptyInput();
     const logger = DefaultLogger.of(writer);
 
-    const p1 = Range({ start: 0, end: 1000 });
-    const p2 = Listen();
-    const p3 = Delay(1000);
-    const p4 = Pause(pauseSignal);
+    const pipeline = new PipelineBuilder({ input, signal, logger })
+      .through(Range({ start: 0, end: 1000 }))
+      .through(Listen())
+      .through(Delay(1000))
+      .through(Pause(pauseSignal))
+      .build();
 
-    const p1i = p1({ input, signal, logger });
-    const p2i = p2({ input: p1i, signal, logger });
-    const p3i = p3({ input: p2i, signal, logger });
-    const p4i = p4({ input: p3i, signal, logger });
-
-    await consume(p4i, writer);
+    await consume(pipeline, writer);
   };

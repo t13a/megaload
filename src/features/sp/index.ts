@@ -6,6 +6,7 @@ export * from "./Iterate";
 export * from "./Listen";
 export * from "./Map";
 export * from "./Pause";
+export * from "./PipelineBuilder";
 export * from "./Range";
 export * from "./Reduce";
 export * from "./StreamProcessor";

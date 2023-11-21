@@ -1,35 +1,48 @@
-import { CountProps, DelayProps, count, format, isPrime } from ".";
+import {
+  CountProps,
+  DelayProps,
+  count as countNumber,
+  format,
+  isPrime,
+} from ".";
 import { Dipatch } from "../Dispatch";
 
 export const CountPrimeHardCoded =
   ({ from, to }: CountProps, { time }: DelayProps): Dipatch =>
   async ({ signal, ...context }) => {
-    let result = 0;
-
     const beginAt = new Date().getTime();
 
-    let t1 = new Date().getTime();
-    for (const n of count({ from, to })) {
-      const t2 = new Date().getTime();
-      if (t2 - t1 >= time) {
+    // Initialize result.
+    let result = 0;
+
+    // Initialize start time.
+    let startTime = new Date().getTime();
+
+    // Enumerate numbers.
+    for (const n of countNumber({ from, to })) {
+      // Listen events if threshold time exceeded.
+      const processTime = new Date().getTime() - startTime;
+      if (processTime >= time) {
         await new Promise((resolve) => setTimeout(resolve));
-        t1 = t2;
+        startTime = new Date().getTime();
       }
+
+      // Exit for-loop if aborted.
       if (signal.aborted) {
-        return;
+        break;
       }
+
+      // Increment result if the number is a prime.
       if (isPrime(n)) {
         result++;
       }
     }
 
     const endAt = new Date().getTime();
-
-    context.writer(`result = ${format(result)}`);
-
     const n = to - from + 1;
     const ms = endAt - beginAt;
     const iops = n / ((endAt - beginAt) / 1000);
+    context.writer(`result = ${format(result)}`);
     context.writer(`n = ${format(n)} (${format(from)}~${format(to)})`);
     context.writer(`ms = ${format(ms)}`);
     context.writer(`iops = ${format(iops)}`);
