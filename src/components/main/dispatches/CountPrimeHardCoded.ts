@@ -7,7 +7,7 @@ export const CountPrimeHardCoded =
     const beginAt = new Date().getTime();
 
     // Initialize variables;
-    let result = 0;
+    let count = 0;
     let startTime = new Date().getTime();
 
     // Loop the procedure.
@@ -26,9 +26,9 @@ export const CountPrimeHardCoded =
         break;
       }
 
-      // Increment result if the number is a prime.
+      // Increment if the number is a prime.
       if (isPrime(n)) {
-        result++;
+        count++;
       }
     }
 
@@ -36,7 +36,7 @@ export const CountPrimeHardCoded =
     const n = to - from + 1;
     const ms = endAt - beginAt;
     const iops = n / ((endAt - beginAt) / 1000);
-    context.writer(`result = ${formatNumber(result)}`);
+    context.writer(`count = ${formatNumber(count)}`);
     context.writer(
       `n = ${formatNumber(n)} (${formatNumber(from)}~${formatNumber(to)})`,
     );
