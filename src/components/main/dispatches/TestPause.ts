@@ -1,7 +1,7 @@
 import {
+  Async,
   Delay,
   EmptyInput,
-  Listen,
   Pause,
   PauseSignal,
   PipelineBuilder,
@@ -18,8 +18,7 @@ export const TestPause =
     const logger = DefaultLogger.of(writer);
 
     const pipeline = new PipelineBuilder({ input, signal, logger })
-      .through(Range({ start: 0, end: 1000 }))
-      .through(Listen())
+      .through(Async(Range({ start: 0, end: 1000 })))
       .through(Delay(1000))
       .through(Pause(pauseSignal))
       .build();

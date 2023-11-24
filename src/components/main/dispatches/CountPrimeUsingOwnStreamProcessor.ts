@@ -1,4 +1,11 @@
-import { Filter, Listen, PipelineBuilder, Reduce } from "@/features/sp";
+import {
+  Async,
+  EmptyInput,
+  Filter,
+  PipelineBuilder,
+  Range,
+  Reduce,
+} from "@/features/sp";
 import { toArray } from "@/utils";
 import { DefaultLogger } from "@/utils/logger";
 import { CountProps, DelayProps, formatNumber, isPrime } from ".";
@@ -9,17 +16,19 @@ export const CountPrimeUsingOwnStreamProcessor =
   async ({ signal, ...context }) => {
     const beginAt = new Date().getTime();
 
-    // Initialize values.
-    const input = (async function* () {
+    const iterable = function* () {
       for (let n = from; n <= to; n++) {
         yield n;
       }
-    })();
+    };
+
+    // Initialize values.
+    const input = new EmptyInput();
     const logger = DefaultLogger.of(context.writer);
 
     // Build the pipeline.
     const pipeline = new PipelineBuilder({ input, signal, logger })
-      .through(Listen({ time })) // Listen events if threshold time exceeded.
+      .through(Async(Range({ start: from, end: to + 1 }), time)) // Listen events if threshold time exceeded.
       .through(Filter(isPrime)) // Output if number is prime.
       .through(Reduce((output: number) => ++output, 0)) // Increment.
       .build();
