@@ -4,6 +4,4 @@ export interface BlockingQueue<T> extends AsyncIterable<T> {
   enqueueAll(input: Iterable<T> | AsyncIterable<T>): Promise<void>;
 }
 
-export type QueueBuffer<T> = Pick<T[], "length"> &
-  Pick<T[], "push"> &
-  Pick<T[], "shift">;
+export type QueueBuffer<T> = { [P in "length" | "push" | "shift"]: T[][P] };
