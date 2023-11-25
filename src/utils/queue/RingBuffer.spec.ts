@@ -43,6 +43,12 @@ describe("RingBuffer", () => {
       expect(buffer.at(0)).toBe(1);
       expect(buffer.at(1)).toBe(2);
       expect(buffer.at(2)).toBe(undefined);
+
+      buffer.push(3);
+      expect(buffer.at(-1)).toBe(undefined);
+      expect(buffer.at(0)).toBe(2);
+      expect(buffer.at(1)).toBe(3);
+      expect(buffer.at(2)).toBe(undefined);
     });
   });
 

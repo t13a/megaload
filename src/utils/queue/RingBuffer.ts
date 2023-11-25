@@ -38,7 +38,7 @@ export class RingBuffer<T> implements QueueBuffer<T> {
   }
 
   at(index: number) {
-    if (index >= this.capacity) {
+    if (index < 0 || index >= this.capacity) {
       return undefined;
     }
 
