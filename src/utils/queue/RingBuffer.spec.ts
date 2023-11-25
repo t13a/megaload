@@ -10,6 +10,42 @@ describe("RingBuffer", () => {
     );
   });
 
+  describe("at", () => {
+    it("returns a value (capacity=1)", () => {
+      const buffer = new RingBuffer<number>(1);
+
+      expect(buffer.at(-1)).toBe(undefined);
+      expect(buffer.at(0)).toBe(undefined);
+      expect(buffer.at(1)).toBe(undefined);
+
+      buffer.push(1);
+      expect(buffer.at(-1)).toBe(undefined);
+      expect(buffer.at(0)).toBe(1);
+      expect(buffer.at(1)).toBe(undefined);
+    });
+
+    it("returns a value (capacity=2)", () => {
+      const buffer = new RingBuffer<number>(2);
+
+      expect(buffer.at(-1)).toBe(undefined);
+      expect(buffer.at(0)).toBe(undefined);
+      expect(buffer.at(1)).toBe(undefined);
+      expect(buffer.at(2)).toBe(undefined);
+
+      buffer.push(1);
+      expect(buffer.at(-1)).toBe(undefined);
+      expect(buffer.at(0)).toBe(1);
+      expect(buffer.at(1)).toBe(undefined);
+      expect(buffer.at(2)).toBe(undefined);
+
+      buffer.push(2);
+      expect(buffer.at(-1)).toBe(undefined);
+      expect(buffer.at(0)).toBe(1);
+      expect(buffer.at(1)).toBe(2);
+      expect(buffer.at(2)).toBe(undefined);
+    });
+  });
+
   describe("length", () => {
     it("is zero at initial state", () => {
       const buffer = new RingBuffer<number>(1);
@@ -75,6 +111,15 @@ describe("RingBuffer", () => {
 
       buffer.shift();
       expect(buffer.length).toBe(0);
+    });
+
+    it("can use to clear all values (capacity=1)", () => {
+      const buffer = new RingBuffer<number>(1);
+
+      buffer.push(1);
+      buffer.length = 0;
+      expect(buffer.length).toBe(0);
+      expect(buffer.shift()).toBe(undefined);
     });
   });
 

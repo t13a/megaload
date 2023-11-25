@@ -27,6 +27,24 @@ export class RingBuffer<T> implements QueueBuffer<T> {
     return this._length;
   }
 
+  set length(value: number) {
+    if (value === 0) {
+      this.buffer = new Array(this.capacity);
+      this.startIndex = 0;
+      this._length = 0;
+    } else {
+      throw new Error("Not implemented yet");
+    }
+  }
+
+  at(index: number) {
+    if (index >= this.capacity) {
+      return undefined;
+    }
+
+    return this.buffer[this.offsetIndex(index)];
+  }
+
   push(...items: T[]): number {
     for (let i = 0; i < items.length; i++) {
       this.buffer[this.offsetIndex(this._length)] = items[i];
