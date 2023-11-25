@@ -2,7 +2,7 @@ import { QueueBuffer } from "./types";
 
 export class RingBuffer<T> implements QueueBuffer<T> {
   private capacity;
-  private buffer: (T | undefined)[];
+  private data: (T | undefined)[];
   private startIndex: number = 0;
   private _length: number = 0;
 
@@ -12,14 +12,14 @@ export class RingBuffer<T> implements QueueBuffer<T> {
     }
 
     this.capacity = capacity;
-    this.buffer = new Array(capacity);
+    this.data = new Array(capacity);
   }
 
-  private offsetIndex(value: number) {
-    if (this.startIndex + value < this.capacity) {
-      return this.startIndex + value;
+  private offsetIndex(index: number) {
+    if (this.startIndex + index < this.capacity) {
+      return this.startIndex + index;
     } else {
-      return this.startIndex + value - this.capacity;
+      return this.startIndex + index - this.capacity;
     }
   }
 
@@ -29,7 +29,7 @@ export class RingBuffer<T> implements QueueBuffer<T> {
 
   set length(value: number) {
     if (value === 0) {
-      this.buffer = new Array(this.capacity);
+      this.data = new Array(this.capacity);
       this.startIndex = 0;
       this._length = 0;
     } else {
@@ -42,12 +42,12 @@ export class RingBuffer<T> implements QueueBuffer<T> {
       return undefined;
     }
 
-    return this.buffer[this.offsetIndex(index)];
+    return this.data[this.offsetIndex(index)];
   }
 
   push(...items: T[]): number {
     for (let i = 0; i < items.length; i++) {
-      this.buffer[this.offsetIndex(this._length)] = items[i];
+      this.data[this.offsetIndex(this._length)] = items[i];
 
       if (this._length < this.capacity) {
         this._length++;
@@ -64,8 +64,8 @@ export class RingBuffer<T> implements QueueBuffer<T> {
       return undefined;
     }
 
-    const item = this.buffer[this.startIndex];
-    this.buffer[this.startIndex] = undefined;
+    const item = this.data[this.startIndex];
+    this.data[this.startIndex] = undefined;
     this.startIndex = this.offsetIndex(1);
     this._length--;
     return item;
