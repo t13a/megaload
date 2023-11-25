@@ -1,9 +1,9 @@
-import { BlockingQueue } from ".";
+import { BlockingQueue, RingBuffer } from ".";
 
 export class DefaultBlockingQueue<T> implements BlockingQueue<T> {
   private capacity;
-  private values: T[] = [];
   private done = false;
+  private values;
   private dequeuings: ((input: IteratorResult<T>) => void)[] = [];
   private enqueuings: (() => void)[] = [];
 
@@ -13,27 +13,35 @@ export class DefaultBlockingQueue<T> implements BlockingQueue<T> {
     }
 
     this.capacity = capacity;
+    this.values = new RingBuffer<T>(capacity);
   }
 
   dequeue(): Promise<IteratorResult<T>> {
     return new Promise(async (resolve) => {
+      if (this.values.length > 0) {
+        resolve({ value: this.values.shift()! });
+      } else {
+        const onDequeue = (input: IteratorResult<T>) => {
+          resolve(input);
+
+          if (this.done && this.dequeuings.length > 0) {
+            for (const dequeuing of this.dequeuings) {
+              dequeuing({ done: true, value: undefined });
+            }
+            this.dequeuings.length = 0;
+          }
+        };
+
+        if (this.done) {
+          onDequeue({ done: true, value: undefined });
+        } else {
+          this.dequeuings.push(onDequeue);
+        }
+      }
+
       if (this.enqueuings.length > 0) {
         this.enqueuings.shift()!();
       }
-
-      if (this.values.length > 0) {
-        resolve({ value: this.values.shift()! });
-        return;
-      }
-
-      if (this.done) {
-        resolve({ done: true, value: undefined });
-        return;
-      }
-
-      this.dequeuings.push((input) => {
-        resolve(input);
-      });
     });
   }
 
@@ -41,42 +49,30 @@ export class DefaultBlockingQueue<T> implements BlockingQueue<T> {
     return new Promise((resolve) => {
       if (this.done) {
         resolve();
-        return;
-      }
+      } else {
+        const onEnqueue = () => {
+          if (input.done) {
+            this.done = true;
+          }
 
-      this.enqueuings.push(() => {
-        if (this.done) {
+          if (this.dequeuings.length > 0) {
+            this.dequeuings.shift()!(input);
+          } else if (!input.done) {
+            this.values.push(input.value);
+          }
+
           resolve();
-          return;
-        }
+        };
 
-        if (input.done) {
-          this.done = true;
+        if (
+          input.done ||
+          this.dequeuings.length > 0 ||
+          this.values.length < this.capacity
+        ) {
+          onEnqueue();
         } else {
-          this.values.push(input.value);
+          this.enqueuings.push(onEnqueue);
         }
-
-        resolve();
-
-        if (this.done) {
-          for (let i = 0; i < this.enqueuings.length; i++) {
-            this.enqueuings[i]();
-          }
-          this.enqueuings.length = 0;
-
-          for (let i = 0; i < this.dequeuings.length; i++) {
-            this.dequeuings[i](input);
-          }
-          this.dequeuings.length = 0;
-        }
-      });
-
-      if (this.values.length < this.capacity) {
-        this.enqueuings.shift()!();
-      }
-
-      if (this.dequeuings.length > 0) {
-        this.dequeuings.shift()!({ value: this.values.shift()! });
       }
     });
   }
