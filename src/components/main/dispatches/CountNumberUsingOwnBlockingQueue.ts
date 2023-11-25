@@ -10,7 +10,7 @@ export const CountNumberUsingBlockingQueue =
 
     const beginAt = new Date().getTime();
 
-    const queue = new DefaultBlockingQueue();
+    const queue = new DefaultBlockingQueue(1);
     const producer = async function* () {
       for (let n = from; n <= to; n++) {
         yield n;

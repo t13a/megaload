@@ -1,49 +1,91 @@
 import { BlockingQueue } from ".";
 
-type Resolve<T> = (value: IteratorResult<T>) => void;
-
 export class DefaultBlockingQueue<T> implements BlockingQueue<T> {
+  private capacity;
   private values: T[] = [];
-  private blockings: Resolve<T>[] = [];
-  private closed = false;
+  private done = false;
+  private dequeuings: ((input: IteratorResult<T>) => void)[] = [];
+  private enqueuings: (() => void)[] = [];
+
+  constructor(capacity: number) {
+    if (capacity <= 0) {
+      throw new RangeError("The capacity must be greater than zero.");
+    }
+
+    this.capacity = capacity;
+  }
 
   dequeue(): Promise<IteratorResult<T>> {
-    return new Promise(async (blocking) => {
+    return new Promise(async (resolve) => {
+      if (this.enqueuings.length > 0) {
+        this.enqueuings.shift()!();
+      }
+
       if (this.values.length > 0) {
-        blocking({ value: await this.values.shift()! });
-      } else {
-        if (this.closed) {
-          blocking({ done: true, value: undefined });
-        } else {
-          this.blockings.push(blocking);
+        resolve({ value: this.values.shift()! });
+        return;
+      }
+
+      if (this.done) {
+        resolve({ done: true, value: undefined });
+        return;
+      }
+
+      this.dequeuings.push((input) => {
+        resolve(input);
+      });
+    });
+  }
+
+  enqueue(input: IteratorResult<T, any>): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.done) {
+        resolve();
+        return;
+      }
+
+      this.enqueuings.push(() => {
+        if (this.done) {
+          resolve();
+          return;
         }
+
+        if (input.done) {
+          this.done = true;
+        } else {
+          this.values.push(input.value);
+        }
+
+        resolve();
+
+        if (this.done) {
+          for (let i = 0; i < this.enqueuings.length; i++) {
+            this.enqueuings[i]();
+          }
+          this.enqueuings.length = 0;
+
+          for (let i = 0; i < this.dequeuings.length; i++) {
+            this.dequeuings[i](input);
+          }
+          this.dequeuings.length = 0;
+        }
+      });
+
+      if (this.values.length < this.capacity) {
+        this.enqueuings.shift()!();
+      }
+
+      if (this.dequeuings.length > 0) {
+        this.dequeuings.shift()!({ value: this.values.shift()! });
       }
     });
   }
 
-  enqueue(input: IteratorResult<T, any>): void {
-    if (this.closed) {
-      return;
-    }
-    if (input.done) {
-      this.closed = true;
-      this.blockings.forEach((blocking) =>
-        blocking({ done: true, value: undefined }),
-      );
-      this.blockings.length = 0;
-    } else {
-      if (this.blockings.length > 0) {
-        this.blockings.shift()!({ value: input.value });
-      } else {
-        this.values.push(input.value);
-      }
-    }
-  }
-
   async enqueueAll(input: Iterable<T> | AsyncIterable<T>): Promise<void> {
     for await (const value of input) {
-      this.enqueue({ value });
+      await this.enqueue({ value });
     }
+
     this.enqueue({ done: true, value: undefined });
   }
 
@@ -52,7 +94,7 @@ export class DefaultBlockingQueue<T> implements BlockingQueue<T> {
   }
 }
 
-export class DefaultBlockingQueueAsyncIterator<T> implements AsyncIterator<T> {
+class DefaultBlockingQueueAsyncIterator<T> implements AsyncIterator<T> {
   private queue;
 
   constructor(queue: BlockingQueue<T>) {

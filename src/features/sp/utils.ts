@@ -40,7 +40,7 @@ export const toWritableStream = <W>(
   abortController: AbortController,
   logger: Logger,
 ) => {
-  const input = new DefaultBlockingQueue<W>();
+  const input = new DefaultBlockingQueue<W>(1);
   return new WritableStream<W>({
     start(controller) {
       const signal = abortController.signal;
