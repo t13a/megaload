@@ -82,11 +82,22 @@ export class DefaultBlockingQueue<T> implements BlockingQueue<T> {
   }
 
   async enqueueAll(input: Iterable<T> | AsyncIterable<T>): Promise<void> {
+    await this.enqueueValues(input);
+    await this.enqueueDone();
+  }
+
+  async enqueueDone(): Promise<void> {
+    await this.enqueue({ done: true, value: undefined });
+  }
+
+  async enqueueValue(value: T): Promise<void> {
+    await this.enqueue({ value });
+  }
+
+  async enqueueValues(input: AsyncIterable<T> | Iterable<T>): Promise<void> {
     for await (const value of input) {
       await this.enqueue({ value });
     }
-
-    this.enqueue({ done: true, value: undefined });
   }
 
   [Symbol.asyncIterator](): AsyncIterator<T> {
