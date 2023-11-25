@@ -73,7 +73,7 @@ describe("DefaultBlockingQueue", () => {
       await queue.enqueue({ value: 3 });
 
       const beginAt = new Date().getTime();
-      setTimeout(async () => await queue.dequeue(), 10);
+      setTimeout(async () => expect((await queue.dequeue()).value).toBe(1), 10);
       await queue.enqueue({ value: 4 });
       expect(new Date().getTime() - beginAt).toBeGreaterThanOrEqual(10);
     });
@@ -112,9 +112,9 @@ describe("DefaultBlockingQueue", () => {
       await queue.enqueue({ value: 3 });
 
       const beginAt = new Date().getTime();
-      setTimeout(async () => await queue.dequeue(), 10);
-      setTimeout(async () => await queue.dequeue(), 20);
-      setTimeout(async () => await queue.dequeue(), 30);
+      setTimeout(async () => expect((await queue.dequeue()).value).toBe(1), 10);
+      setTimeout(async () => expect((await queue.dequeue()).value).toBe(2), 20);
+      setTimeout(async () => expect((await queue.dequeue()).value).toBe(3), 30);
       await queue.enqueueAll(
         (async function* () {
           yield* [4, 5, 6];
@@ -129,8 +129,8 @@ describe("DefaultBlockingQueue", () => {
       await queue.enqueue({ value: 2 });
 
       const beginAt = new Date().getTime();
-      setTimeout(async () => await queue.dequeue(), 10);
-      setTimeout(async () => await queue.dequeue(), 20);
+      setTimeout(async () => expect((await queue.dequeue()).value).toBe(1), 10);
+      setTimeout(async () => expect((await queue.dequeue()).value).toBe(2), 20);
       await queue.enqueueAll(
         (async function* () {
           yield* [3, 4, 5];
