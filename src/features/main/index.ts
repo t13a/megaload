@@ -1,2 +1,2 @@
 export * from "./MainAction";
-export * from "./types";
+export * from "./MainController";

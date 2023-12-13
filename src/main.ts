@@ -1,32 +1,33 @@
-import { SubActionFactory, initializeForm } from "@/features/main";
+import assert from "assert";
+import "reflect-metadata";
+import { container } from "tsyringe";
+import { Main, MainController } from "./features/main";
 import {
   PerformLogToConsole,
   PerformLogToFile,
   PerformLogToTerminal,
   Stub,
-} from "@/features/main/sub-actions";
-import assert from "assert";
-import "reflect-metadata";
-import { container } from "tsyringe";
+} from "./features/main/sub-actions";
 import "./main.scss";
 
-container.register<SubActionFactory>("Stub", {
-  useValue: Stub,
-});
-container.register<SubActionFactory>("PerformLogToConsole", {
-  useValue: PerformLogToConsole,
-});
-container.register<SubActionFactory>("PerformLogToTerminal", {
-  useValue: PerformLogToTerminal,
-});
-container.register<SubActionFactory>("PerformLogToFile", {
-  useValue: PerformLogToFile,
-});
+container.register("Stub", { useClass: Stub });
+container.register("PerformLogToConsole", { useClass: PerformLogToConsole });
+container.register("PerformLogToTerminal", { useClass: PerformLogToTerminal });
+container.register("PerformLogToFile", { useClass: PerformLogToFile });
 
 document.addEventListener("DOMContentLoaded", () => {
   for (const form of document.querySelectorAll("form.action")) {
     assert(form instanceof HTMLFormElement);
-    console.debug(`Initializing form: ${form.name}`);
-    initializeForm(form);
+
+    console.debug(`Initializing form ${form.name}`);
+
+    const childContainer = container.createChildContainer();
+    childContainer.register(HTMLFormElement, { useValue: form });
+
+    const mainController = new MainController();
+    mainController.init(childContainer);
+
+    const mainAction = new Main().create(childContainer);
+    mainController.start(mainAction);
   }
 });
