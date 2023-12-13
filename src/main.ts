@@ -7,7 +7,7 @@ import {
   PerformLogToFile,
   PerformLogToTerminal,
   Stub,
-} from "./features/main/sub-actions";
+} from "./features/main/subactions";
 import "./main.scss";
 
 container.register("Stub", { useClass: Stub });
