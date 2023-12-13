@@ -1,6 +1,7 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "jest.autoRun": {},
   "notebook.codeActionsOnSave": {
     "source.fixAll.eslint": true
   }
