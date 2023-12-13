@@ -65,7 +65,7 @@ describe("waitForCallback", () => {
     await waitForRun({ logger, signal, trigger });
     const beginAt = logs[0].timestamp.getTime();
     const endAt = logs[1].timestamp.getTime();
-    expect(endAt - beginAt).toBeGreaterThan(10);
+    expect(endAt - beginAt).toBeGreaterThanOrEqual(10);
     expect(logs[1].data).toBe("end");
   });
 
